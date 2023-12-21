@@ -1,0 +1,71 @@
+.dashboard {
+  position: relative;
+}
+
+.dashboard-content {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+}
+
+.topbar {
+  border: var(--main-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  padding: 1rem;
+}
+
+.topbar h1 {
+  color: var(--primary-color)
+}
+
+
+
+.sidbar {
+  /* width: 20%; */
+  max-width: 30%;
+  padding: 2rem;
+  border: var(--main-border);
+  height: 50vh;
+  position: sticky;
+  top: 9rem;
+}
+
+.sidbar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+
+.users {
+  flex: 1;
+  height: 300vh;
+}
+
+.users table {
+  width: 100%;
+}
+
+.users table th {
+  text-align: left;
+  border: 1px solid var(--main-color);
+  padding: 1rem;
+}
+
+.users table tr:nth-child(odd) {
+  background-color: white !important;
+}
+
+table td {
+  border: 1px solid var(--main-color-low);
+  padding: 10px 5px;
+}
+
+.users table tr {
+  background-color: var(--main-color-low);
+}

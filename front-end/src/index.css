@@ -1,0 +1,80 @@
+:root {
+  --main-color: rgb(121, 121, 250);
+  --main-color-low: rgb(121, 121, 250, 0.04);
+  --main-color-hover: rgb(52, 52, 252);
+  --primary-color: rgb(118, 212, 132);
+  --primary-color-low: rgb(118, 212, 132, 0.04);
+  --main-border: 1px solid var(--main-color);
+  --tran: 200ms;
+}
+
+li {
+  list-style: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.container {
+  padding: 0 90px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+  cursor: pointer;
+}
+
+button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.link {
+  color: var(--main-color);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+.link:hover {
+  color: var(--main-color-hover);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+
+.button {
+  font-size: 14px;
+  border: var(--main-border);
+  padding: 10px 20px;
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+.button:hover {
+  background-color: var(--main-color-low);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}

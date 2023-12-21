@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { useState } from "react"
-import Header from './Components/Header'
+import Header from './Components/Header';
 
-const SignUp = () => {
-  const [name, setName] = useState('')
+const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [passwordR, setPasswordR] = useState('')
   const [accept, setAccept] = useState(false)
   const [emailError, setEmailError] = useState('')
 
@@ -14,23 +12,21 @@ const SignUp = () => {
     let flag = false;
     e.preventDefault()
     setAccept(true)
-    if (name === '' || password.length < 8 || passwordR !== password)
+    if (password.length < 8)
       flag = false
     else
       flag = true
-
     if (flag) {
       try {
-        let res = await axios.post('http://127.0.0.1:8000/api/register', {
-          name,
+        let res = await axios.post('http://127.0.0.1:8000/api/login', {
           email,
           password,
-          password_confirmation: passwordR
         })
-        if (res.status) {
-          location.pathname = '/'
+        console.log('%cregister response', 'color: lightgreen', res)
+        if (res.status == 200) {
           localStorage.setItem('email', email)
           setEmailError('')
+          location.pathname = '/'
         }
       } catch (err) {
         console.log('%cregister error', 'color: red', err)
@@ -44,20 +40,14 @@ const SignUp = () => {
       <Header />
       <div className="register">
         <form onSubmit={Submit}>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id='name' placeholder='Name...' value={name} onChange={(e) => setName(e.target.value)} />
-          {name === '' && accept && <p className="error">Name is required</p>}
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" placeholder="Email..." required value={email} onChange={(e) => setEmail(e.target.value)} />
-          {accept && emailError && <p className='error'>Email has already taken</p>}
+          {accept && emailError == 401 && <p className='error'>This email is not registered</p>}
           <label htmlFor="password">Password:</label>
           <input type="password" id="password" placeholder="Password..." value={password} onChange={(e) => setPassword(e.target.value)} />
           {password.length < 8 && accept && <p className="error">Password must be more than 8 characters</p>}
-          <label htmlFor="repeat">Repeat Password:</label>
-          <input type="password" id="repeat" placeholder="Repeat Password" value={passwordR} onChange={(e) => setPasswordR(e.target.value)} />
-          {passwordR !== password && accept && <p className="error">Password does not match</p>}
           <div style={{ textAlign: "center" }}>
-            <button className='button' type="submit">Register</button>
+            <button className='button' type="submit">Log in</button>
           </div>
         </form>
       </div>
@@ -65,4 +55,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default Login

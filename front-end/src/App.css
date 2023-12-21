@@ -3,10 +3,7 @@
   box-sizing: border-box;
 }
 
-.container {
-  padding: 0 90px;
-  margin: 0 auto;
-}
+
 
 body {
   font-family: 'Cairo', sans-serif;
@@ -15,36 +12,34 @@ body {
 
 
 /* Register */
-.parent {
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  form {
-    width: 400px;
-    box-shadow: 0px 2px 15px rgb(0 0 0 / 10%);
-    padding: 20px;
-  }
+form {
+  width: 400px;
+  /* box-shadow: 0px 2px 15px rgb(0 0 0 / 10%); */
+  padding: 20px;
+  border: var(--main-border);
+}
 
+label {
+  display: block;
+  margin-bottom: 3px;
 }
 
 input {
   padding: 10px 20px;
   width: 100%;
-  outline: none;
-  border: 2px solid white;
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
+  outline: 2px solid transparent;
+  border: var(--main-border);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
   margin-bottom: 8px;
 }
 
 input:focus {
-  border: 2px solid #86b7fe;
+  outline: 2px solid #b2d1ff;
 }
 
 input::placeholder {
@@ -60,31 +55,13 @@ input::placeholder {
 
 .register button,
 .register-nav {
-  outline: none;
-  border: none;
-  background-color: #86b7fe;
+  border: var(--main-border);
   padding: 10px 20px;
-  color: white;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  border: 20x solid white;
-  font-weight: bold;
 }
 
 .register button:hover,
 .register-nav:hover {
-  background-color: white;
-  border: 2px solid #86b7fe;
-  color: #86b7fe;
+  background-color: var(--main-color-low)
 }
 
 .error {
@@ -101,4 +78,14 @@ input::placeholder {
   justify-content: space-between;
   gap: 1rem;
 
+}
+
+nav {
+  border: var(--main-border);
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+nav a:hover {
+color: var(--main-color-hover);
 }
