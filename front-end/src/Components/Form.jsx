@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const Form = () => {
+const Form = (props) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordR, setPasswordR] = useState('')
   const [accept, setAccept] = useState(false) // show errors after first click
   const [emailError, setEmailError] = useState('') // email existence detector
+
+  useEffect(() => {
+    setName(props?.name)
+    setEmail(props?.email)
+  }, [props?.name, props?.email])
 
   const Submit = async (e) => {
     // we used the flag variable instead of useState to detect the changes in 
@@ -22,20 +27,20 @@ const Form = () => {
 
     if (flag) {
       try {
-        let res = await axios.post('http://127.0.0.1:8000/api/register', {
+        let res = await axios.post(`http://127.0.0.1:8000/api/${props?.endPoint}`, {
           name,
           email,
           password,
           password_confirmation: passwordR
         })
         if (res.status) {
-          location.pathname = '/'
-          localStorage.setItem('email', email)
-          setEmailError('')
+          location.pathname = `/${props?.navigateTo}`
+          props?.hasLocalStorate && localStorage.setItem('email', email)
+          props?.hasEmailExistence && setEmailError('')
         }
       } catch (err) {
         console.log('%cregister error', 'color: red', err)
-        setEmailError(err.response.status)// if the user == 422 it means it's already taken
+        props?.hasEmailExistence && setEmailError(err.response.status)// if the user == 422 it means it's already taken
       }
     }
   }
@@ -54,7 +59,7 @@ const Form = () => {
       <input type="password" id="repeat" placeholder="Repeat Password" value={passwordR} onChange={(e) => setPasswordR(e.target.value)} />
       {passwordR !== password && accept && <p className="error">Password does not match</p>}
       <div style={{ textAlign: "center" }}>
-        <button className='button' type="submit">Register</button>
+        <button className='button' type="submit">{props?.button}</button>
       </div>
     </form>
   )

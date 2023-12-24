@@ -7,7 +7,7 @@ const SignUp = () => {
     <div className="container">
       <Header />
       <div className="register">
-        <Form />
+        <Form hasLocalStorate={true} endPoint='register' navigateTo='' hasEmailExistence={true} button='Register' />
       </div>
     </div>
   )
