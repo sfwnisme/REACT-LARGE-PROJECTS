@@ -53,7 +53,8 @@
 
 .users table th {
   text-align: left;
-  border: 1px solid var(--main-color);
+  background-color: var(--main-color);
+  color: white;
   padding: 1rem;
 }
 
@@ -68,4 +69,20 @@ table td {
 
 .users table tr {
   background-color: var(--main-color-low);
+}
+
+
+
+.action-box {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.5rem;
+}
+
+
+
+.action-box a,
+.action-box>button {
+  width: fit-content;
 }
