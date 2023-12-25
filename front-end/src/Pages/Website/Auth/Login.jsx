@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from "react"
-import Header from './Components/Header';
+import Header from '../../../Components/Header';
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -30,7 +30,7 @@ const Login = () => {
         }
       } catch (err) {
         console.log('%cregister error', 'color: red', err)
-        setEmailError(err.response.status)
+        setEmailError(err?.response?.status)
       }
     }
   }
@@ -39,7 +39,7 @@ const Login = () => {
     <div className="container">
       <Header />
       <div className="register">
-        <form onSubmit={Submit}>
+        <form onSubmit={Submit} className='login'>
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" placeholder="Email..." required value={email} onChange={(e) => setEmail(e.target.value)} />
           {accept && emailError == 401 && <p className='error'>This email is not registered</p>}

@@ -32,6 +32,7 @@ Route::prefix('user')->controller(AuthController::class)->group(function () {
     Route::get('show', 'getAll');
     Route::get('showbyid/{id}', 'getbyId');
     Route::post('update/{id}', 'updateUser');
+    Route::post('create', 'register');
     Route::delete('delete/{user_id}', 'remove');
 });
 

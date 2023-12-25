@@ -1,13 +1,14 @@
 import ReactDOM from 'react-dom/client'
-import Home from './Home.jsx'
+import Home from './Pages/Website/Home.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import SignUp from './SignUp.jsx'
-import Login from './Login.jsx'
+import SignUp from './Pages/Website/Auth/SignUp.jsx'
+import Login from './Pages/Website/Auth/Login.jsx'
 import App from './App.jsx'
-import Dashboard from './Dashboard.jsx'
-import Users from './Users.jsx'
-import UpdateUser from './UpdateUser.jsx'
+import Dashboard from './Pages/Dashboard/Dashboard.jsx'
+import Users from './Pages/Dashboard/Users/Users.jsx'
+import UpdateUser from './Pages/Dashboard/Users/UpdateUser.jsx'
+import Createuser from './Pages/Dashboard/Users/Createuser.jsx'
 
 
 const router = createBrowserRouter([
@@ -33,15 +34,20 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         children: [
           {
+            // index: true,
             path: 'users',
             element: <Users />
-          }
+          },
+          {
+            path: 'create',
+            element: <Createuser />
+          },
+          {
+            path: 'users/:id',
+            element: <UpdateUser />,
+          },
         ]
       },
-      {
-        path: '/dashboard/users/:id',
-        element: <UpdateUser />,
-      }
 
     ]
   }

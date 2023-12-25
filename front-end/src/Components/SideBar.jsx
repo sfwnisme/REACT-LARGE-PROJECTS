@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const SideBar = () => {
   return (
     <div className='sidbar'>
       <div className='sidbar-links'>
-        <Link className='link' to="/dashboard/users">Users</Link>
-        <Link className='link' to="">Settings</Link>
-        <Link className='link' to="">Edits</Link>
+        <NavLink className='link' to="users">Users</NavLink>
+        <NavLink className='link' to="create">Create User</NavLink>
+        <NavLink className='link' to="/">Edits</NavLink>
       </div>
     </div>
   )

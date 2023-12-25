@@ -35,33 +35,36 @@ const Form = (props) => {
         })
         if (res.status) {
           location.pathname = `/${props?.navigateTo}`
-          props?.hasLocalStorate && localStorage.setItem('email', email)
-          props?.hasEmailExistence && setEmailError('')
+          props?.hasLocalStorage && localStorage.setItem('email', email)
+          setEmailError('')
         }
       } catch (err) {
         console.log('%cregister error', 'color: red', err)
-        props?.hasEmailExistence && setEmailError(err.response.status)// if the user == 422 it means it's already taken
+        setEmailError(err?.response?.status)// if the user == 422 it means it's already taken
       }
     }
   }
   return (
-    <form onSubmit={Submit}>
-      <label htmlFor="name">Name:</label>
-      <input type="text" id='name' placeholder='Name...' value={name} onChange={(e) => setName(e.target.value)} />
-      {name === '' && accept && <p className="error">Name is required</p>}
-      <label htmlFor="email">Email:</label>
-      <input type="email" id="email" placeholder="Email..." required value={email} onChange={(e) => setEmail(e.target.value)} />
-      {accept && emailError && <p className='error'>Email has already taken</p>}
-      <label htmlFor="password">Password:</label>
-      <input type="password" id="password" placeholder="Password..." value={password} onChange={(e) => setPassword(e.target.value)} />
-      {password.length < 8 && accept && <p className="error">Password must be more than 8 characters</p>}
-      <label htmlFor="repeat">Repeat Password:</label>
-      <input type="password" id="repeat" placeholder="Repeat Password" value={passwordR} onChange={(e) => setPasswordR(e.target.value)} />
-      {passwordR !== password && accept && <p className="error">Password does not match</p>}
-      <div style={{ textAlign: "center" }}>
-        <button className='button' type="submit">{props?.button}</button>
-      </div>
-    </form>
+    <div className='form-container'>
+      <h1>{props.title}</h1>
+      <form onSubmit={Submit}>
+        <label htmlFor="name">Name:</label>
+        <input type="text" id='name' placeholder='Name...' value={name} onChange={(e) => setName(e.target.value)} />
+        {name === '' && accept && <p className="error">Name is required</p>}
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" placeholder="Email..." required value={email} onChange={(e) => setEmail(e.target.value)} />
+        {accept && emailError && <p className='error'>Email has already taken</p>}
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" placeholder="Password..." value={password} onChange={(e) => setPassword(e.target.value)} />
+        {password.length < 8 && accept && <p className="error">Password must be more than 8 characters</p>}
+        <label htmlFor="repeat">Repeat Password:</label>
+        <input type="password" id="repeat" placeholder="Repeat Password" value={passwordR} onChange={(e) => setPasswordR(e.target.value)} />
+        {passwordR !== password && accept && <p className="error">Password does not match</p>}
+        <div style={{ textAlign: "center" }}>
+          <button className='button' type="submit">{props?.button}</button>
+        </div>
+      </form>
+    </div>
   )
 }
 

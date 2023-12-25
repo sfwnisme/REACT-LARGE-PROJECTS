@@ -1,7 +1,7 @@
-import TopBar from './Components/TopBar'
+import TopBar from '../../Components/TopBar'
 import { Outlet } from 'react-router-dom'
 import './dashboard.css'
-import SideBar from './Components/SideBar'
+import SideBar from '../../Components/SideBar'
 
 const Dashboard = () => {
   return (

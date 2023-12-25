@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import Header from './Components/Header'
-import Form from './Components/Form';
+import Form from '../../../Components/Form';
 
 const UpdateUser = () => {
   const [name, setName] = useState('')
@@ -18,12 +17,10 @@ const UpdateUser = () => {
     })
   }, [id])
 
-
   return (
     <div className="container">
-      <Header />
       <div className="register">
-        <Form hasLocalStorage={false} endPoint={`user/update/${id}`} navigateTo='dashboard/users' name={name} email={email} button='Update' />
+        <Form title="Update user" endPoint={`user/update/${id}`} navigateTo='dashboard/users' name={name} email={email} button='Update' />
       </div>
     </div>
   )

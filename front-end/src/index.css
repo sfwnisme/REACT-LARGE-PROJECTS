@@ -41,6 +41,11 @@ button {
   cursor: pointer;
 }
 
+.link.active {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
 .link {
   color: var(--main-color);
   transition: var(--tran);
