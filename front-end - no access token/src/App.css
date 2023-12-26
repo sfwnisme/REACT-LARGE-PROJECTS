@@ -1,0 +1,98 @@
+/* Global CSS */
+* {
+  box-sizing: border-box;
+}
+
+
+
+body {
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+}
+
+
+/* Register */
+
+.form-container, .login{
+  width: 400px;
+  /* box-shadow: 0px 2px 15px rgb(0 0 0 / 10%); */
+  padding: 20px;
+  border: var(--main-border);
+}
+
+.form-container h1 {
+  margin-bottom: 2rem;
+  text-decoration: underline;
+  font-size: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 3px;
+}
+
+input {
+  padding: 10px 20px;
+  width: 100%;
+  outline: 2px solid transparent;
+  border: var(--main-border);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+  margin-bottom: 8px;
+}
+
+input:focus {
+  outline: 2px solid #b2d1ff;
+}
+
+input::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.register button,
+.register-nav {
+  border: var(--main-border);
+  padding: 10px 20px;
+}
+
+.register button:hover,
+.register-nav:hover {
+  background-color: var(--main-color-low)
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 0;
+}
+
+/* Header */
+
+.d-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+}
+
+nav {
+  border: var(--main-border);
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+nav a:hover {
+  color: var(--main-color-hover);
+}

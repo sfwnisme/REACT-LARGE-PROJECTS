@@ -9,7 +9,6 @@ import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import Users from './Pages/Dashboard/Users/Users.jsx'
 import UpdateUser from './Pages/Dashboard/Users/UpdateUser.jsx'
 import Createuser from './Pages/Dashboard/Users/Createuser.jsx'
-import UserProvider from './Pages/Website/Context/Context.jsx'
 
 
 const router = createBrowserRouter([
@@ -57,8 +56,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-  <UserProvider>
-    <RouterProvider router={router} />
-  </UserProvider>
+  <RouterProvider router={router} />
   // </React.StrictMode >
 )
