@@ -5,7 +5,7 @@
   --primary-color: rgb(118, 212, 132);
   --primary-color-low: rgb(118, 212, 132, 0.04);
   --main-border: 1px solid var(--main-color);
-  --tran: 200ms;
+  --tran: 100ms;
   --danger-color: #c82333;
 }
 
@@ -88,7 +88,8 @@ button {
 
 .button:hover,
 .button-sm:hover {
-  background-color: var(--main-color-low);
+  color: white;
+  background-color: var(--main-color) !important;
   transition: var(--tran);
   -webkit-transition: var(--tran);
   -moz-transition: var(--tran);

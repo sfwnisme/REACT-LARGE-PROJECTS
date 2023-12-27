@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { User } from '../Pages/Website/Context/Context'
+import { User } from '../Pages/Website/Context/UserContext'
 
 const Form = (props) => {
   const [name, setName] = useState('')

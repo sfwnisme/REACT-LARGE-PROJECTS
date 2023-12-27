@@ -9,8 +9,51 @@ import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import Users from './Pages/Dashboard/Users/Users.jsx'
 import UpdateUser from './Pages/Dashboard/Users/UpdateUser.jsx'
 import Createuser from './Pages/Dashboard/Users/Createuser.jsx'
-import UserProvider from './Pages/Website/Context/Context.jsx'
+import UserProvider from './Pages/Website/Context/UserContext.jsx'
+import RequireAuth from './Pages/Website/Auth/RequireAuth.jsx'
 
+
+// const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <App />,
+//     children: [
+//       {
+//         index: true,
+//         element: <Home />
+//       },
+//       {
+//         path: 'register',
+//         element: <SignUp />,
+//         index: true,
+//       },
+//       {
+//         path: 'login',
+//         element: <Login />
+//       },
+//       {
+//         path: 'dashboard',
+//         element: <Dashboard />,
+//         children: [
+//           {
+//             // index: true,
+//             path: 'users',
+//             element: <Users />
+//           },
+//           {
+//             path: 'create',
+//             element: <Createuser />
+//           },
+//           {
+//             path: 'users/:id',
+//             element: <UpdateUser />,
+//           },
+//         ]
+//       },
+
+//     ]
+//   }
+// ])
 
 const router = createBrowserRouter([
   {
@@ -24,28 +67,33 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <SignUp />,
-        index: true,
+        // index: true,
       },
       {
         path: 'login',
         element: <Login />
       },
       {
-        path: 'dashboard',
-        element: <Dashboard />,
+        element: <RequireAuth />,
         children: [
           {
-            // index: true,
-            path: 'users',
-            element: <Users />
-          },
-          {
-            path: 'create',
-            element: <Createuser />
-          },
-          {
-            path: 'users/:id',
-            element: <UpdateUser />,
+            path: 'dashboard',
+            element: <Dashboard />,
+            children: [
+              {
+                // index: true,
+                path: 'users',
+                element: <Users />
+              },
+              {
+                path: 'create',
+                element: <Createuser />
+              },
+              {
+                path: 'users/:id',
+                element: <UpdateUser />,
+              },
+            ]
           },
         ]
       },
