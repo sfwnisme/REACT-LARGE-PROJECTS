@@ -1,0 +1,120 @@
+:root {
+  --main-color: rgb(0, 105, 217);
+  --main-color-low: rgb(0, 105, 217, 0.04);
+  --main-color-hover: rgb(3, 81, 164);
+  --primary-color: rgb(118, 212, 132);
+  --primary-color-low: rgb(118, 212, 132, 0.04);
+  --main-border: 1px solid var(--main-color);
+  --tran: 100ms;
+  --danger-color: #c82333;
+}
+
+li {
+  list-style: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.container {
+  padding: 0 90px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+  cursor: pointer;
+}
+
+button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.link.active {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.link {
+  color: var(--main-color);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+.link:hover {
+  color: var(--main-color-hover);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+
+.button {
+  font-size: 14px;
+  padding: 10px 20px;
+}
+
+.button,
+.button-sm {
+  border: var(--main-border);
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+.button-sm {
+  font-size: 10px;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.button:hover,
+.button-sm:hover {
+  color: white;
+  background-color: var(--main-color) !important;
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+.button-danger {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.button-danger:hover {
+  background-color: var(--danger-color);
+  color: white;
+  border-color: transparent;
+}
+
+.button-edit {
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.button-edit:hover {
+  background-color: var(--main-color);
+  color: white;
+  border-color: transparent;
+}

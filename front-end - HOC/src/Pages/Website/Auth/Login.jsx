@@ -1,17 +1,12 @@
 import axios from 'axios';
-import { useContext, useState } from "react"
+import { useState } from "react"
 import Header from '../../../Components/Header';
-import { useNavigate } from 'react-router-dom';
-import { User } from '../Context/UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [accept, setAccept] = useState(false)
   const [emailError, setEmailError] = useState('')
-  const navigate = useNavigate()
-
-  const user = useContext(User)
 
   const Submit = async (e) => {
     let flag = false;
@@ -31,15 +26,7 @@ const Login = () => {
         if (res.status == 200) {
           localStorage.setItem('email', email)
           setEmailError('')
-          navigate('/')
-
-          //:::::::::::::[TOKEN]:::::::::::::::
-          let token = res?.data?.data?.token
-          let userDetails = res?.data?.data?.user
-          console.log('token', token)
-          await user.setAuth({ token, userDetails }) // using await to checke the data in console on try
-          console.log('user auth from login', user)
-          //:::::::::::::::::::::::::::::::::::
+          location.pathname = '/'
         }
       } catch (err) {
         console.log('%cregister error', 'color: red', err)
