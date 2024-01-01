@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import axios from 'axios'
+import { User } from '../../Website/Context/UserContext'
 
 const Createuser = () => {
 
@@ -10,15 +11,25 @@ const Createuser = () => {
   const [accept, setAccept] = useState(false) // show errors after first click
   const [emailError, setEmailError] = useState(false) // email existence detector
 
+  const { token } = useContext(User).auth
+
   const Submit = async (e) => {
     e.preventDefault()
     try {
-      let res = await axios.post(`http://127.0.0.1:8000/api/user/create`, {
-        name,
-        email,
-        password,
-        password_confirmation: passwordR
-      })
+      let res = await axios.post(
+        `http://127.0.0.1:8000/api/user/create`,
+        {
+          name,
+          email,
+          password,
+          password_confirmation: passwordR
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        }
+      )
       console.log('create user response', res)
       setEmailError('')
     } catch (err) {

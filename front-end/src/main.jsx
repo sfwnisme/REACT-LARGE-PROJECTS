@@ -11,49 +11,8 @@ import UpdateUser from './Pages/Dashboard/Users/UpdateUser.jsx'
 import Createuser from './Pages/Dashboard/Users/Createuser.jsx'
 import UserProvider from './Pages/Website/Context/UserContext.jsx'
 import RequireAuth from './Pages/Website/Auth/RequireAuth.jsx'
+import PersistLogin from './Pages/Website/Auth/PersistLogin.jsx'
 
-
-// const router = createBrowserRouter([
-//   {
-//     path: '/',
-//     element: <App />,
-//     children: [
-//       {
-//         index: true,
-//         element: <Home />
-//       },
-//       {
-//         path: 'register',
-//         element: <SignUp />,
-//         index: true,
-//       },
-//       {
-//         path: 'login',
-//         element: <Login />
-//       },
-//       {
-//         path: 'dashboard',
-//         element: <Dashboard />,
-//         children: [
-//           {
-//             // index: true,
-//             path: 'users',
-//             element: <Users />
-//           },
-//           {
-//             path: 'create',
-//             element: <Createuser />
-//           },
-//           {
-//             path: 'users/:id',
-//             element: <UpdateUser />,
-//           },
-//         ]
-//       },
-
-//     ]
-//   }
-// ])
 
 const router = createBrowserRouter([
   {
@@ -74,24 +33,29 @@ const router = createBrowserRouter([
         element: <Login />
       },
       {
-        element: <RequireAuth />,
+        element: <PersistLogin />,
         children: [
           {
-            path: 'dashboard',
-            element: <Dashboard />,
+            element: <RequireAuth />,
             children: [
               {
-                // index: true,
-                path: 'users',
-                element: <Users />
-              },
-              {
-                path: 'create',
-                element: <Createuser />
-              },
-              {
-                path: 'users/:id',
-                element: <UpdateUser />,
+                path: 'dashboard',
+                element: <Dashboard />,
+                children: [
+                  {
+                    // index: true,
+                    path: 'users',
+                    element: <Users />
+                  },
+                  {
+                    path: 'create',
+                    element: <Createuser />
+                  },
+                  {
+                    path: 'users/:id',
+                    element: <UpdateUser />,
+                  },
+                ]
               },
             ]
           },

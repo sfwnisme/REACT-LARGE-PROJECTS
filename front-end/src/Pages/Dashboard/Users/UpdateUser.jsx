@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios";
+import { User } from "../../Website/Context/UserContext";
 
 const UpdateUser = () => {
   const [name, setName] = useState('')
@@ -9,15 +10,27 @@ const UpdateUser = () => {
   const [accept, setAccept] = useState(false) // show errors after first click
   const [emailError, setEmailError] = useState(false) // email existence detector
 
+  const { token } = useContext(User).auth
+  console.log(token)
+
   const Submit = async (e) => {
     e.preventDefault()
+    setAccept(true)
     try {
-      let res = await axios.post(`http://127.0.0.1:8000/api/user/update/${id}`, {
-        name,
-        email,
-        password,
-        password_confirmation: passwordR
-      })
+      let res = await axios.post(
+        `http://127.0.0.1:8000/api/user/update/${id}`,
+        {
+          name,
+          email,
+          password,
+          password_confirmation: passwordR
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        },
+      )
       console.log('creating user response', res)
       setEmailError('')
     } catch (err) {
@@ -26,7 +39,6 @@ const UpdateUser = () => {
         setEmailError(err?.response?.status)
       else
         setEmailError('')// if the user == 422 it means it's already taken
-
       setAccept(true)
     }
   }
@@ -36,13 +48,25 @@ const UpdateUser = () => {
   console.log(id)
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/user/showbyid/${id}`).then((res) => {
-      return res.json()
-    }).then((data) => {
-      setName(data[0].name)
-      setEmail(data[0].email)
-    })
-  }, [id])
+    // fetch(`http://127.0.0.1:8000/api/user/showbyid/${id}`).then((res) => {
+    //   return res.json()
+    // }).then((data) => {
+    //   setName(data[0].name)
+    //   setEmail(data[0].email)
+    // })
+    axios
+      .get(`http://127.0.0.1:8000/api/user/showbyid/${id}`, {
+        headers: {
+          // Accept: 'applicatoin/json',
+          Authorization: 'Bearer ' + token
+        }
+      })
+      .then((res) => {
+        setName(res.data[0].name)
+        setEmail(res.data[0].email)
+      })
+
+  }, [id, token])
 
   return (
     <div className="register">

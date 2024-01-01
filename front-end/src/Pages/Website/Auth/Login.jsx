@@ -3,13 +3,17 @@ import { useContext, useState } from "react"
 import Header from '../../../Components/Header';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../Context/UserContext';
+import Cookies from 'universal-cookie';
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [accept, setAccept] = useState(false)
-  const [emailError, setEmailError] = useState('')
+  const [Err, setErr] = useState('')
   const navigate = useNavigate()
+
+  // Cookies
+  const cookie = new Cookies(null, {path: '/'})
 
   const user = useContext(User)
 
@@ -29,12 +33,12 @@ const Login = () => {
         })
         console.log('%cregister response', 'color: lightgreen', res)
         if (res.status == 200) {
-          localStorage.setItem('email', email)
-          setEmailError('')
+          setErr(false)
           navigate('/')
 
           //:::::::::::::[TOKEN]:::::::::::::::
           let token = res?.data?.data?.token
+          cookie.set('Bearer', token)
           let userDetails = res?.data?.data?.user
           console.log('token', token)
           await user.setAuth({ token, userDetails }) // using await to checke the data in console on try
@@ -43,7 +47,8 @@ const Login = () => {
         }
       } catch (err) {
         console.log('%cregister error', 'color: red', err)
-        setEmailError(err?.response?.status)
+        if (err.response.status === 401)
+          setErr(true)
       }
     }
   }
@@ -55,13 +60,13 @@ const Login = () => {
         <form onSubmit={Submit} className='login'>
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" placeholder="Email..." required value={email} onChange={(e) => setEmail(e.target.value)} />
-          {accept && emailError == 401 && <p className='error'>This email is not registered</p>}
           <label htmlFor="password">Password:</label>
           <input type="password" id="password" placeholder="Password..." value={password} onChange={(e) => setPassword(e.target.value)} />
           {password.length < 8 && accept && <p className="error">Password must be more than 8 characters</p>}
           <div style={{ textAlign: "center" }}>
             <button className='button' type="submit">Log in</button>
           </div>
+          {accept && Err && <p className='error'>Wrong Email or Password</p>}
         </form>
       </div>
     </div>

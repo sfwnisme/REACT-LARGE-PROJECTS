@@ -2,7 +2,8 @@ import axios from 'axios';
 import Header from '../../../Components/Header'
 import { useContext, useState } from 'react';
 import { User } from '../Context/UserContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 const SignUp = () => {
   const [name, setName] = useState('')
@@ -11,6 +12,9 @@ const SignUp = () => {
   const [passwordR, setPasswordR] = useState('')
   const [accept, setAccept] = useState(false)
   const [emailError, setEmailError] = useState(false) // email existence detector
+
+  // Cookies
+  const cookie = new Cookies(null, {path: '/'})
 
   const navigate = useNavigate()
 
@@ -34,6 +38,7 @@ const SignUp = () => {
       :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       */
       let token = res?.data?.data?.token
+      cookie.set('Bearer', token)
       let userDetails = res?.data?.data?.user
       console.log(userDetails, token)
       userNow.setAuth({ token, userDetails })
