@@ -32,6 +32,7 @@ const Createuser = () => {
       )
       console.log('create user response', res)
       setEmailError('')
+      location.pathname = '/dashboard/users'
     } catch (err) {
       console.log('%cregister error', 'color: red', err)
       if (err?.response?.status === 422)

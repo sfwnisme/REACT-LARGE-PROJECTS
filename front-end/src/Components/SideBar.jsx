@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const SideBar = () => {
   return (
@@ -6,7 +6,8 @@ const SideBar = () => {
       <div className='sidbar-links'>
         <NavLink className='link' to="users">Users</NavLink>
         <NavLink className='link' to="create">Create User</NavLink>
-        <NavLink className='link' to="/">Edits</NavLink>
+        <NavLink className='link' end to="products">Products</NavLink>
+        <NavLink className='link' to="products/create">New products</NavLink>
       </div>
     </div>
   )

@@ -12,6 +12,9 @@ import Createuser from './Pages/Dashboard/Users/Createuser.jsx'
 import UserProvider from './Pages/Website/Context/UserContext.jsx'
 import RequireAuth from './Pages/Website/Auth/RequireAuth.jsx'
 import PersistLogin from './Pages/Website/Auth/PersistLogin.jsx'
+import Products from './Pages/Dashboard/Products/Products.jsx'
+import CreateProduct from './Pages/Dashboard/Products/CreateProduct.jsx'
+import UpdateProduct from './Pages/Dashboard/Products/UpdateProduct.jsx'
 
 
 const router = createBrowserRouter([
@@ -43,7 +46,6 @@ const router = createBrowserRouter([
                 element: <Dashboard />,
                 children: [
                   {
-                    // index: true,
                     path: 'users',
                     element: <Users />
                   },
@@ -55,6 +57,18 @@ const router = createBrowserRouter([
                     path: 'users/:id',
                     element: <UpdateUser />,
                   },
+                  {
+                    path: 'products',
+                    element: <Products />
+                  },
+                  {
+                    path: 'product/create',
+                    element: <CreateProduct />
+                  },
+                  {
+                    path: 'products/:id',
+                    element: <UpdateProduct />
+                  }
                 ]
               },
             ]

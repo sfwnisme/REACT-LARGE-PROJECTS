@@ -33,6 +33,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('create', 'register');
         Route::delete('delete/{user_id}', 'remove');
     });
+    //  Products
+    Route::prefix('product')->controller(ProductsController::class)->group(function () {
+        Route::get('show', 'index');
+        Route::get('showbyid/{id}', 'getbyId');
+        Route::post('update/{id}', 'update');
+        Route::post('create', 'create');
+        Route::delete('delete/{id}', 'remove');
+    });
 });
 
 

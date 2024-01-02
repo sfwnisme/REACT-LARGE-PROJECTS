@@ -10,8 +10,10 @@ const UpdateUser = () => {
   const [accept, setAccept] = useState(false) // show errors after first click
   const [emailError, setEmailError] = useState(false) // email existence detector
 
+  // ::::::::::::[Cookies]::::::::::::
   const { token } = useContext(User).auth
   console.log(token)
+  // ::::::::::::::[End]::::::::::::::
 
   const Submit = async (e) => {
     e.preventDefault()

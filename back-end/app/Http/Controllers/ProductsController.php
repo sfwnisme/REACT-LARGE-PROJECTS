@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\images;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ProductsController extends Controller
 {
@@ -27,35 +29,24 @@ class ProductsController extends Controller
      */
     public function create(Request $request)
     {
+        $product = new Product();
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required|image',
+        ]);
+        $product->title = $request->title;
+        $product->description = $request->description;
 
-        $files = $request->file('images');
-        $image_path = $request->file('image')->store('image', 'public');
-        if (!$request->hasFile('images')) {
-            return response()->json(['upload_file_not_found'], 400);
-        }
-        $files = $request->file('images');
-
-        $i = 0;
-        foreach ($files as $file) {
-            $i = $i + 1;
-            $image = new Detailimage;
-            $image->detail_id = $detail->id;
-
-            $filename = date('YmdHis') . $i . '.' . $file->getClientOriginalExtension();
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = date('YmdHis') . '.' . $file->getClientOriginalExtension();
             $path = 'images';
             $file->move($path, $filename);
-            $image->image = url('/') . '/images/' . $filename;
-            $image->save();
+            $product->image = url('/') . '/images/' . $filename;
         }
-        $data = Product::create([
-            'image' => $image_path,
-            'title' => $request->title,
-            'images' => implode("|", $images),
-            'description' => $request->description,
-            'alt' => $request->alt
-        ]);
 
-        return $data;
+        $product->save();
     }
     /**
      * Store a newly created resource in storage.
@@ -100,7 +91,29 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+        $product->title = $request->title;
+        $product->description = $request->description;
+
+        if ($request->hasFile('image')) {
+            $oldpath = public_path() . '/images/' . substr($product['image'], strrpos($product['image'], '/') + 1);
+
+            if (File::exists($oldpath)) {
+                File::delete($oldpath);
+            }
+            $file = $request->file('image');
+            $filename = date('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $product->image = url('/') . '/images/' . $filename;
+
+            $path = 'images';
+            $file->move($path, $filename);
+        }
+
+        $product->save();
     }
 
     /**
@@ -109,7 +122,7 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function remove($id)
     {
         DB::table('products')->where('id', '=', $id)->delete();
     }

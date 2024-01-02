@@ -1,12 +1,12 @@
 import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
+import { memo } from "react"
+import { Link } from "react-router-dom"
 import Cookies from "universal-cookie"
 
 // import '../App.css'
 const Header = () => {
   const cookie = new Cookies(null, { path: '/' })
   const token = cookie.get('Bearer')
-  const navigate = useNavigate()
 
   const handleLogOut = async () => {
     try {
@@ -18,8 +18,7 @@ const Header = () => {
             }
           })
       cookie.remove("Bearer")
-      // location.pathname = '/'
-      navigate('/')
+      location.pathname = '/'
     } catch (err) {
       console.log(err)
     }
@@ -55,4 +54,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default memo(Header)

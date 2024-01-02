@@ -53,7 +53,6 @@ const Users = () => {
     setRunUseEffect((prev) => ++prev)
   }
 
-
   const showUsers = users.map((user, index) => (
     <tr key={user?.id}>
       <td>{`${index} - [${user?.id}]`}</td>
