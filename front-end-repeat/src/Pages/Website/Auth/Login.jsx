@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Cookies from "universal-cookie"
 
 const Login = () => {
@@ -7,18 +8,21 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  //::::::::::::::::::::::::
+  //:::::
   const [emailError, setEmailError] = useState('')
   const [inputError, setInputError] = useState(false)
-  //::::::::::::::::::::::::
+  //:::::
 
-  //::::::::::::::::::::::::
+  //:::::
   const cookie = new Cookies(null, { path: '/' })
   console.log(cookie.cookies.Bearer)
-  //::::::::::::::::::::::::
+  //:::::
 
+  //:::::
+  const navigate = useNavigate()
+  //:::::
 
-
+  //:::::
   const Submit = async (e) => {
     e.preventDefault()
     setInputError(true)
@@ -30,12 +34,14 @@ const Login = () => {
       cookie.set('Bearer', res.data.data.token)
       setEmailError(false)
       setInputError('')
-      console.log('::::::login done::::::', res)
+      navigate('/dashboard/users')
+      console.log(':::login done:::', res)
     } catch (error) {
       setEmailError(error.response.status)
-      console.log('++++login error++++', error)
+      console.log('+++login error+++', error)
     }
   }
+  //:::::
 
   return (
     <div className="form-container">

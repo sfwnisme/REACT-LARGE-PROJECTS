@@ -1,27 +1,33 @@
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Cookies from "universal-cookie"
 
 const Register = () => {
   // const API = 'http://127.0.0.1:8000/api/'
 
+  //:::::
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [repassword, setRepassword] = useState('')
+  //:::::
 
-  //:::::::::::::::::::::
+  //:::::
   const [emailError, setEmailError] = useState('')
   const [inputError, setInputError] = useState(false)
-  //:::::::::::::::::::::
+  //:::::
 
-  //:::::::::::::::::::::
+  //:::::
+  const navigate = useNavigate()
+  //:::::
+
+  //:::::
   const cookie = new Cookies(null, { path: '/' })
   console.log(cookie.get('Bearer'))
-  //:::::::::::::::::::::
+  //:::::
 
-
-
+  //:::::
   const Submit = async (e) => {
     e.preventDefault()
     setInputError(true)
@@ -36,13 +42,16 @@ const Register = () => {
       cookie.set('Bearer', res.data.data.token)
       setEmailError('')
       setInputError(false)
-      console.log('::::::register done::::::', res)
+      navigate('/dashboard/users')
+      console.log(':::register done:::', res)
 
     } catch (error) {
-      console.log('::::::register error::::::', error)
+      console.log('+++register error+++', error)
       setEmailError(error.response.status)
     }
   }
+  //:::::
+
   return (
     <div className="form-container">
       <h1>Register</h1>

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
 const Users = () => {
@@ -8,17 +9,17 @@ const Users = () => {
   console.log(import.meta.env.VITE_BASE_URL + 'user/show')
 
 
-  //::::::::::::::::::::
+  //:::::
   const [snapshot, setSnapshot] = useState(0)
-  //::::::::::::::::::::
-  
-  //::::::::::::::::::::
+  //:::::
+
+  //:::::
   const cookie = new Cookies(null, { path: '/' })
   const token = cookie.get('Bearer')
   console.log(token)
-  //::::::::::::::::::::
+  //:::::
 
-
+  //:::::
   useEffect(() => {
     axios.get(import.meta.env.VITE_BASE_URL + 'user/show', {
       headers: {
@@ -26,9 +27,9 @@ const Users = () => {
       }
     }).then((data) => {
       setUsers(data.data)
-      console.log('::::::get users done::::::', data)
+      console.log(':::get users done:::', data)
     }).catch((error) => {
-      console.log('++++++get users error++++++', error)
+      console.log('+++get users error+++', error)
     })
 
   }, [token, snapshot])
@@ -44,15 +45,14 @@ const Users = () => {
             }
           }
         )
-        .then((res) => console.log('::::::delete user done::::::', res))
-        setSnapshot((prev) => ++prev)
+        .then((res) => console.log(':::delete user done:::', res))
+      setSnapshot((prev) => ++prev)
     } catch (error) {
-      console.log('++++++delete user error++++++', error)
+      console.log('+++delete user error+++', error)
     }
 
   }
-
-
+  //:::::
   const deleteIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-trash" width="18" height="18" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#e74c3c" fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -78,11 +78,14 @@ const Users = () => {
       <td title={user?.name}>{user?.name.substring(0, 3)}...</td>
       <td title={user?.email}>{user?.email}</td>
       <td className='action-btns'>
-        <button className='btn btn-sm'>{editIcon}</button>
+        <NavLink to={user?.id.toString()}>
+          <button className='btn btn-sm'>{editIcon}</button>
+        </NavLink>
         <button className='btn btn-danger btn-sm' onClick={() => deleteUser(user?.id)}>{deleteIcon}</button>
       </td>
     </tr>
   ))
+  //:::::
 
 
   return (

@@ -10,11 +10,15 @@ import Register from './Pages/Website/Auth/Register'
 
 const router = createBrowserRouter([
   {
-    path: '/*',
+    path: '/',
     element: <App />,
     children: [
       {
-        index: '/',
+        index: true,
+        element: <Website />
+      },
+      {
+        path: '/',
         element: <Website />,
         children: [
           {
@@ -31,6 +35,11 @@ const router = createBrowserRouter([
         path: 'dashboard',
         element: <Dashboard />,
         children: [
+          {
+            index: true,
+            element: <Users />
+          }
+          ,
           {
             path: 'users',
             element: <Users />,

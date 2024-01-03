@@ -226,7 +226,7 @@ aside a {
 }
 
 aside a svg {
-  stroke: var(--main-color) !important;
+  margin-right: 5px;
 }
 
 /*:::::::::::::::::::::::::::::*/
