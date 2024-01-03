@@ -1,0 +1,310 @@
+:root {
+  --main-color: rgb(0, 105, 217);
+  --main-color-mid: rgb(0, 105, 217, 0.5);
+  --main-color-low: rgb(0, 105, 217, 0.1);
+  --danger-color: rgb(231, 76, 60);
+  --danger-color-mid: rgb(231, 76, 60, 0.5);
+  --danger-color-low: rgb(231, 76, 60, 0.1);
+  --free-color: rgb(40, 167, 69);
+  --free-color-mid: rgb(40, 167, 69, 0.5);
+  --free-color-low: rgb(40, 167, 69, 0.1);
+  --tran: 120ms;
+}
+
+/*::::::::::[Start media query]::::::::::*/
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 575px) {
+  .container {
+    width: 100%;
+    padding-inline: 1rem;
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 576px) {
+  .container {
+    width: 550px;
+    padding-inline: 1rem;
+    margin-inline: auto;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {
+  .container {
+    width: 740px;
+    padding-inline: 1rem;
+    margin-inline: auto;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .container {
+    width: 800px;
+    padding-inline: 1rem;
+    margin-inline: auto;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    width: 900px;
+    padding-inline: 1rem;
+    margin-inline: auto;
+  }
+}
+
+/* Extra extra large devices (extra large desktops, 1400px and up) */
+@media (min-width: 1400px) {
+  .container {
+    width: 1000px;
+    padding-inline: 1rem;
+    margin-inline: auto;
+  }
+}
+
+/*::::::::::::::::::::::::::::*/
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: arial;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+/*::::::::::[Dashboard Header]::::::::::*/
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--main-color);
+  padding: 2rem;
+  margin-block: 1rem 2rem
+}
+
+.dashboard-header header {
+  display: flex;
+  gap: 2rem;
+}
+
+/*::::::::::::::::::::::::::::::::*/
+
+
+/*::::::::::[Start btn styling]::::::::::*/
+.btn {
+  padding: 1rem;
+  background-color: transparent;
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
+  font-size: 1rem;
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+  transition-property: background;
+}
+
+.btn:hover {
+  background-color: var(--main-color-low);
+}
+
+.btn:active {
+  background-color: var(--main-color-mid);
+}
+
+.btn-danger {
+  background-color: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-color-low);
+}
+
+.btn-danger:active {
+  background-color: var(--danger-color-mid);
+}
+
+.btn-free {
+  background-color: transparent;
+  color: var(--free-color);
+  border: 1px solid var(--free-color);
+}
+
+.btn-free:hover {
+  background-color: var(--free-color-low);
+}
+
+.btn-free:active {
+  background-color: var(--free-color-mid);
+}
+
+.btn-sm {
+  font-size: 12px;
+  padding: 2px;
+  color: red !important;
+  stroke: red !important;
+}
+
+/*:::::::::::::::::::::::::::::*/
+
+/*::::::::::[Start lnk styling]::::::::::*/
+.lnk {
+  color: var(--main-color);
+  padding: 2px 0rem;
+  font-size: 14px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.lnk::before {
+  content: '';
+  position: absolute;
+  background-color: var(--main-color);
+  height: 1px;
+  width: 0%;
+  bottom: 0;
+  left: 0;
+  transition: var(--tran);
+  -webkit-transition: var(--tran);
+  -moz-transition: var(--tran);
+  -ms-transition: var(--tran);
+  -o-transition: var(--tran);
+}
+
+.lnk:hover::before {
+  content: '';
+  position: absolute;
+  background-color: var(--main-color);
+  height: 1px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+/*:::::::::::::::::::::::::::::*/
+
+.dashboard-body {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 2rem;
+}
+
+.dashboard-body .content-view {
+  flex: 1;
+}
+
+/*::::::::::[Start aside]::::::::::*/
+
+aside {
+  border: 1px solid var(--main-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 3rem;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0rem;
+}
+
+aside a {
+  width: fit-content;
+  color: var(--main-color);
+}
+
+aside a svg {
+  stroke: var(--main-color) !important;
+}
+
+/*:::::::::::::::::::::::::::::*/
+
+/*::::::::::[Start form]::::::::::*/
+.form-container {
+  border: 1px solid var(--main-color);
+  padding: 1rem;
+  width: min(100%, 400px);
+  margin-inline: auto;
+}
+
+.form-container h1 {
+  margin-bottom: 1rem;
+  background-color: var(--main-color);
+  /* border: 1px solid var(--main-color); */
+  width: fit-content;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-container form label:not(:first-of-type) {
+  margin-top: 10px;
+}
+
+.form-container input {
+  border: 1px solid var(--main-color-mid);
+  padding: 10px 5px;
+}
+
+.form-container input:focus {
+  outline: 3px solid var(--main-color-low);
+}
+
+.form-container form small {
+  color: var(--danger-color);
+  font-size: 12px;
+}
+
+.form-container form button {
+  margin-top: 2rem;
+}
+
+/*:::::::::::::::::::::::::::::*/
+
+/*:::::::::::::::[table]::::::::::::::*/
+table {
+  width: 100%;
+}
+
+table th {
+  background-color: var(--main-color);
+  color: white;
+  padding: 10px 1rem;
+}
+
+table tr td {
+  padding: 8px;
+}
+
+table tr:nth-child(even) td {
+  background-color: var(--main-color-low);
+}
+
+table .action-btns {
+  display: flex;
+  gap: 5px;
+}
+
+table .action-btns button {
+  width: 100%;
+}
+
+/*:::::::::::::::::::::::::::::*/
