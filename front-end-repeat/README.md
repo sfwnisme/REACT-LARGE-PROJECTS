@@ -5,16 +5,16 @@
 [x] logout
 [x] routing
 [x] cookies
-[ ] context API
-[ ] refresh token
-[ ] authorized pages
+[ ] context API => facing some bugs
+[x] refresh token
+[x] authorized pages
 [x] styling
 [x] entire components
 [x] users
 [x] create user
 [x] delete user
 [x] update user
-[ ] products
-[ ] update product
-[ ] delete product
-[ ] create product
+[x] products
+[x] update product
+[x] delete product
+[x] create product

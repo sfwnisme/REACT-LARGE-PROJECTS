@@ -1,7 +1,8 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Cookies from "universal-cookie"
+import { User } from "../Context/Context"
 
 const Login = () => {
 
@@ -16,6 +17,8 @@ const Login = () => {
   //:::::
   const cookie = new Cookies(null, { path: '/' })
   console.log(cookie.cookies.Bearer)
+  const context = useContext(User)
+  console.log(context)
   //:::::
 
   //:::::

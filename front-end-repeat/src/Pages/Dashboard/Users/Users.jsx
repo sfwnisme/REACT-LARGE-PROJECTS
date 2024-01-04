@@ -33,9 +33,10 @@ const Users = () => {
     })
 
   }, [token, snapshot])
-
+  //:::::
+  
+  //:::::
   const deleteUser = async (id) => {
-
     try {
       await axios
         .delete(import.meta.env.VITE_BASE_URL + 'user/delete/' + id,
@@ -52,6 +53,7 @@ const Users = () => {
     }
 
   }
+
   //:::::
   const deleteIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-trash" width="18" height="18" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#e74c3c" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -71,22 +73,24 @@ const Users = () => {
       <path d="M13.5 6.5l4 4" />
     </svg>
   )
+  //:::::
 
   const usersList = users.map((user) => (
     <tr key={user?.id}>
       <td title={user?.id}>{user?.id}</td>
       <td title={user?.name}>{user?.name.substring(0, 3)}...</td>
       <td title={user?.email}>{user?.email}</td>
-      <td className='action-btns'>
-        <NavLink to={user?.id.toString()}>
-          <button className='btn btn-sm'>{editIcon}</button>
-        </NavLink>
-        <button className='btn btn-danger btn-sm' onClick={() => deleteUser(user?.id)}>{deleteIcon}</button>
+      <td>
+        <div className='action-btns'>
+          <NavLink to={user?.id.toString()} className='btn btn-sm'>
+            {editIcon}
+          </NavLink>
+          <button className='btn btn-danger btn-sm' onClick={() => deleteUser(user?.id)}>{deleteIcon}</button>
+        </div>
       </td>
     </tr>
   ))
   //:::::
-
 
   return (
     <div>

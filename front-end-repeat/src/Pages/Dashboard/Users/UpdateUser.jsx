@@ -93,7 +93,7 @@ const UpdateUser = () => {
         <label htmlFor="name">Repeat Password:</label>
         <input type="password" name="repeat-password" id="repeat-password" value={repassword} onChange={(e) => setRepassword(e.target.value)} />
         {inputError && repassword !== password && <small>password not match</small>}
-        <button type='submit' className="btn">Register</button>
+        <button type='submit' className="btn">Update</button>
       </form>
     </div>
   )

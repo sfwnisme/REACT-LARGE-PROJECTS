@@ -14,7 +14,6 @@ const Login = () => {
 
   // Cookies
   const cookie = new Cookies(null, {path: '/'})
-
   const user = useContext(User)
 
   const Submit = async (e) => {

@@ -2,6 +2,7 @@
 import { Outlet } from 'react-router-dom'
 import DashboardHeader from './DashboardHeader'
 import Aside from '../../Components/Aside'
+import withGuard from '../Website/Auth/withGuard'
 const Dashboard = () => {
   console.log('dahsboard')
   return (
@@ -10,11 +11,11 @@ const Dashboard = () => {
       <div className='dashboard-body'>
         <Aside />
         <div className='content-view'>
-        <Outlet />
+          <Outlet />
         </div>
       </div>
     </div>
   )
 }
 
-export default Dashboard
+export default withGuard(Dashboard)
