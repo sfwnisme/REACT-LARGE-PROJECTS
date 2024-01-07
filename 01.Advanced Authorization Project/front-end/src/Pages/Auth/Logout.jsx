@@ -1,5 +1,3 @@
-import { useCallback, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
 import Cookie from 'cookie-universal'
 import axios from 'axios'
 import { BASE_URL, LOGOUT } from '../../Api/API'

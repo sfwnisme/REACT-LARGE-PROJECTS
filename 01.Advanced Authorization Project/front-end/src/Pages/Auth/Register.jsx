@@ -96,6 +96,11 @@ const Register = () => {
               {err}
             </Alert>
           }
+          <button className='google-btn'>
+            <p>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" alt="" />
+              Sign up with google</p>
+          </button>
         </div>
         <div className="credential-image-container">
           <img src={srcImage} alt="" />
