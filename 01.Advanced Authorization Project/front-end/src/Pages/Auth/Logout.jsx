@@ -23,12 +23,13 @@ const Logout = () => {
       location.pathname = '/login'
       console.log(':::logout done:::', res)
     } catch (error) {
-      console.log('+++logout error+++', error)
+      console.log('+++logout error+++'
+        , error)
     }
   }
   //:::
 
-  return <Button variant='danger' onClick={handleLogout}>Logout</Button>
+  return <Button variant='danger' size='sm' onClick={handleLogout}>Logout</Button>
 
 }
 
