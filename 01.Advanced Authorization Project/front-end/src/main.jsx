@@ -6,6 +6,7 @@ import HomePage from './Pages/Website/HomePage.jsx'
 import Login from './Pages/Auth/Login.jsx'
 import Register from './Pages/Auth/Register.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Users from './Pages/Website/Users.jsx'
 
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         element: <Register />,
         path: 'register',
+      },
+      {
+        element: <Users />,
+        path: 'users'
       }
     ]
   }

@@ -4,6 +4,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BASE_URL, REGISTER } from '../../Api/API';
 import Alert from 'react-bootstrap/Alert';
+import Loading from '../../Loading/Loading/Loading';
+import PageLoading from '../../Loading/PageLoading/PageLoading';
+import Cookie from 'cookie-universal'
+import { NavLink } from 'react-router-dom';
 
 const Register = () => {
   //:::States
@@ -13,6 +17,11 @@ const Register = () => {
     password: '',
   })
   const [err, setErr] = useState('')
+  const [loading, setLoading] = useState(false)
+  //:::
+
+  //:::
+  const cookie = Cookie()
   //:::
 
   //:::
@@ -31,24 +40,29 @@ const Register = () => {
   const Submit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post(`${BASE_URL}/${REGISTER}`, form, {}).then((res) => {
-        console.log(':::register done:::', res)
-      })
+      setLoading(true)
+      const res = await axios.post(`${BASE_URL}/${REGISTER}`, form)
       setErr('')
+      setLoading(false)
+      cookie.set('e-commerce', res?.data?.token)
       location.pathname = '/'
+      console.log(':::register done:::', res)
     } catch (error) {
-      if (error.response.status)
+      if (error?.response?.status)
         setErr('Email has already been taken')
       else
         setErr('Internal server error')
-
+      setLoading(false)
       console.log('+++register error+++', error)
+    } finally {
+      setLoading(false)
     }
   }
   //:::
 
   return (
     <div>
+      {loading && <PageLoading />}
       <div className='form-container'>
         <div className='form-box'>
           <h1>Register</h1>
@@ -65,7 +79,16 @@ const Register = () => {
               <Form.Control type='password' id="password" placeholder="" name='password' value={form.password} onChange={handleChange} required minLength='6' />
               <Form.Label htmlFor="password">Password</Form.Label>
             </Form.Group>
-            <Button type="submit">Submit</Button>
+            <Button variant='primary' size='sm' type="submit" disabled={!!loading} >
+              {
+                loading
+                  ? <Loading />
+                  : 'Join us'
+              }
+            </Button>
+            <NavLink to='/login'>
+              <Button variant="link" size="sm">already have an account</Button>
+            </NavLink>
           </Form>
           {
             err &&
@@ -74,7 +97,7 @@ const Register = () => {
             </Alert>
           }
         </div>
-        <div className="credential-image-conte">
+        <div className="credential-image-container">
           <img src={srcImage} alt="" />
         </div>
       </div>

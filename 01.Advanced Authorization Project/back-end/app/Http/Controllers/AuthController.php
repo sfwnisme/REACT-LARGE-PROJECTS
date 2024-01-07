@@ -8,6 +8,9 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
 
 class AuthController extends Controller
 {
@@ -22,9 +25,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
         $token = $user->createToken('token')->accessToken;
+        $refreshToken = $user->createToken('authTokenRefresh')->accessToken;
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+
         ], 200);
     }
 
@@ -43,7 +48,15 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+
         ], 200);
+    }
+
+    // Logout Method
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 }
