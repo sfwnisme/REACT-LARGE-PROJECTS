@@ -1,28 +1,23 @@
 import Cookie from 'cookie-universal'
-import axios from 'axios'
-import { BASE_URL, LOGOUT } from '../../Api/API'
+import { LOGOUT } from '../../Api/API'
+import Button from 'react-bootstrap/Button'
+import { AXIOS } from '../../Api/AXIOS.JSX'
 
 const Logout = () => {
 
   //:::
   const cookie = Cookie()
-  const token = cookie.get('e-commerce')
   //:::
 
   //:::
   const handleLogout = () => {
     try {
-      const res = axios.get(`${BASE_URL}/${LOGOUT}`, {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      })
+      const res = AXIOS.get(`/${LOGOUT}`)
       cookie.remove('e-commerce')
       location.pathname = '/login'
       console.log(':::logout done:::', res)
     } catch (error) {
-      console.log('+++logout error+++'
-        , error)
+      console.log('+++logout error+++', error)
     }
   }
   //:::

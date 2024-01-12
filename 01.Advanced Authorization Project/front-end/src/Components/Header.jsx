@@ -10,8 +10,9 @@ const Header = () => {
 
   //:::
   const cookie = Cookie()
-  const token = cookie.get('e-commerce')
+  let token = cookie.get('e-commerce')
   //:::
+
   return (
     <header>
       <Navbar expand="lg" className="">
@@ -29,13 +30,13 @@ const Header = () => {
                   Home
                 </NavLink>
               </Nav.Item>
-              <Nav.Item>
-                <NavLink className='nav-link' to="/users">
-                  Users
-                </NavLink>
-              </Nav.Item>
             </Nav>
             <ButtonGroup>
+              <Button variant='outline-secondary' size='sm'>
+                <NavLink className='nav-link' to="/dashboard">
+                  Dashboard
+                </NavLink>
+              </Button >
               {
                 token
                   ?
@@ -47,7 +48,7 @@ const Header = () => {
                         Login
                       </NavLink>
                     </Button>
-                    <Button variant='outline-primary' size='sm'>
+                    <Button variant='primary' size='sm'>
                       <NavLink className='nav-link' to="/register">
                         Register
                       </NavLink>

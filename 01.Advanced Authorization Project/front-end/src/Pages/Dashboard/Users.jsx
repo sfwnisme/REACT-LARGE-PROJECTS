@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react"
-import { BASE_URL, USERS } from "../../Api/API"
+import { USER, USERS } from "../../Api/API"
 import { Table } from "react-bootstrap"
-import axios from "axios"
+import Button from 'react-bootstrap/Button'
 import Cookie from "cookie-universal"
+import { AXIOS } from "../../Api/AXIOS.JSX"
+import { NavLink } from "react-router-dom"
 
 const Users = () => {
   //:::states
   const [users, setUsers] = useState([])
+  const [num, setNum] = useState(0)
   //:::
-  console.log(users)
 
   //:::
   const cookie = Cookie()
   const token = cookie.get('e-commerce')
-  // console.log(token)
   //:::
 
   //:::
   useEffect(() => {
     try {
-
-      axios.get(`${BASE_URL}/${USERS}`, {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
-      })
+      AXIOS.get(`/${USERS}`)
         .then((data) => {
           setUsers(data.data)
           console.log(':::get users done:::', data)
@@ -32,7 +28,19 @@ const Users = () => {
     } catch (error) {
       console.log('+++get users error++', error)
     }
-  }, [token])
+  }, [token, num])
+  //:::
+
+  //:::
+  const handleDelete = async (id) => {
+    setNum((prev) => ++prev)
+    try {
+      const res = AXIOS.delete(`${USER}/${id}`)
+      console.log(':::delete user done:::', res)
+    } catch (error) {
+      console.log('+++delete user error+++', error)
+    }
+  }
   //:::
 
   //:::
@@ -41,7 +49,13 @@ const Users = () => {
       <td>{user?.id}</td>
       <td>{user?.name}</td>
       <td>{user?.email}</td>
-    </tr>
+      <td>
+        <Button variant="danger" size="sm" onClick={() => handleDelete(user?.id)}>&#129530;</Button>
+        <NavLink to={`${user?.id}`}>
+          <Button variant="primary" size="sm">u</Button>
+        </NavLink>
+      </td>
+    </tr >
   ))
   //:::
 

@@ -2,12 +2,13 @@ import axios from "axios"
 import { useState } from "react"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
-import { BASE_URL, LOGIN } from "../../Api/API"
 import Alert from "react-bootstrap/Alert"
+import { BASE_URL, LOGIN } from "../../Api/API"
 import Loading from "../../Loading/Loading/Loading"
 import PageLoading from "../../Loading/PageLoading/PageLoading"
 import Cookie from 'cookie-universal'
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+import GoogleBtn from "../../Components/GoogleBtn"
 
 const Login = () => {
 
@@ -21,11 +22,16 @@ const Login = () => {
   //:::
 
   //:::
+  const navigate = useNavigate()
+  // console.log(navigate.state)
+  //:::
+
+  //:::
   const cookie = Cookie()
   //:::
 
   //:::
-  const srcImage = 'https://i1.chainbulletin.com/img/2022/06/shutterstock_1950720448.jpg'
+  const srcImage = 'https://res.cloudinary.com/daa68wahe/image/upload/v1704753751/e-commerce/rzwx5ubf9mhycavoqxsj.png'
   //:::
 
   //:::
@@ -46,7 +52,8 @@ const Login = () => {
       setLoading(false)
       const token = res?.data?.token
       cookie.set('e-commerce', token)
-      location.pathname = '/users'
+      location.pathname = 'dashboard/users'
+      console.log(navigate.state)
       console.log(':::login done:::', res)
     } catch (error) {
       if (error?.response?.status)
@@ -87,6 +94,7 @@ const Login = () => {
               <Button variant="link" size="sm">have not account</Button>
             </NavLink>
           </Form>
+          <GoogleBtn />
           {
             err &&
             <Alert variant='danger' className='credentials-error'>

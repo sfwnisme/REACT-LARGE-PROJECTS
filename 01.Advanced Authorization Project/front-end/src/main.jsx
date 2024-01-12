@@ -6,7 +6,11 @@ import HomePage from './Pages/Website/HomePage.jsx'
 import Login from './Pages/Auth/Login.jsx'
 import Register from './Pages/Auth/Register.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Users from './Pages/Website/Users.jsx'
+import Users from './Pages/Dashboard/Users.jsx'
+import GoogleCallBack from './Pages/Auth/GoogleCallBack.jsx'
+import Dashboard from './Pages/Dashboard/Dashboard.jsx'
+import RequireAuth from './Pages/Auth/RequireAuth.jsx'
+import User from './Pages/Dashboard/User.jsx'
 
 
 const router = createBrowserRouter([
@@ -27,8 +31,27 @@ const router = createBrowserRouter([
         path: 'register',
       },
       {
-        element: <Users />,
-        path: 'users'
+        element: <RequireAuth />,
+        children: [
+          {
+            path: 'dashboard',
+            element: <Dashboard />,
+            children: [
+              {
+                element: <Users />,
+                path: 'users'
+              },
+              {
+                element: <User />,
+                path: 'users/:id'
+              }
+            ]
+          },
+        ]
+      },
+      {
+        element: <GoogleCallBack />,
+        path: '/auth/google/callback'
       }
     ]
   }

@@ -8,6 +8,7 @@ import Loading from '../../Loading/Loading/Loading';
 import PageLoading from '../../Loading/PageLoading/PageLoading';
 import Cookie from 'cookie-universal'
 import { NavLink } from 'react-router-dom';
+import GoogleBtn from '../../Components/GoogleBtn';
 
 const Register = () => {
   //:::States
@@ -25,7 +26,7 @@ const Register = () => {
   //:::
 
   //:::
-  let srcImage = 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp'
+  let srcImage = 'https://res.cloudinary.com/daa68wahe/image/upload/v1704753697/e-commerce/xlqwax2gmakopolkvf3z.png'
   //:::
 
   //:::handle form change
@@ -90,17 +91,13 @@ const Register = () => {
               <Button variant="link" size="sm">already have an account</Button>
             </NavLink>
           </Form>
+          <GoogleBtn />
           {
             err &&
             <Alert variant='danger' className='credentials-error'>
               {err}
             </Alert>
           }
-          <button className='google-btn'>
-            <p>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" alt="" />
-              Sign up with google</p>
-          </button>
         </div>
         <div className="credential-image-container">
           <img src={srcImage} alt="" />

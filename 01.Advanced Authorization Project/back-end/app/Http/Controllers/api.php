@@ -37,7 +37,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/users', 'GetUsers');
         Route::get('/user', 'authUser');
         Route::get('/user/{id}', 'getUser');
-        Route::post('/user/edit/{id}', 'editUser');
+        Route::get('/user/edit/{id}', 'editUser');
         Route::delete('/user/{id}', 'destroy');
     });
 
