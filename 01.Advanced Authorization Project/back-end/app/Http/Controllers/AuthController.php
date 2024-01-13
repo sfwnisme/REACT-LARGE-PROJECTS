@@ -22,7 +22,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
         $token = $user->createToken('token')->accessToken;
         $refreshToken = $user->createToken('authTokenRefresh')->accessToken;
@@ -49,7 +49,6 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user,
             'token' => $token,
-
         ], 200);
     }
 

@@ -9,7 +9,7 @@ const Sidebar = () => {
           <NavLink to='users'>Users</NavLink>
         </ListGroup.Item>
         <ListGroup.Item>
-          <NavLink to=''>Create Users</NavLink>
+          <NavLink to='/dashboard/user/add'>Add user</NavLink>
         </ListGroup.Item>
         <ListGroup.Item>
           <NavLink to=''>Products</NavLink>

@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 // Public Routes
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
     Route::post('/passowrd', 'sendResetLink');
-
     Route::post('/reset-password', 'reset');
 });
 
@@ -38,6 +38,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/user', 'authUser');
         Route::get('/user/{id}', 'getUser');
         Route::post('/user/edit/{id}', 'editUser');
+        Route::post('/user/add', 'addUser');
         Route::delete('/user/{id}', 'destroy');
     });
 

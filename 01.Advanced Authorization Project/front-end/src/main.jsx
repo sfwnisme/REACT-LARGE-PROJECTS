@@ -11,6 +11,7 @@ import GoogleCallBack from './Pages/Auth/GoogleCallBack.jsx'
 import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import RequireAuth from './Pages/Auth/RequireAuth.jsx'
 import User from './Pages/Dashboard/User.jsx'
+import AddUser from './Pages/Dashboard/AddUser.jsx'
 
 
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
               {
                 element: <User />,
                 path: 'users/:id'
+              },
+              {
+                element: <AddUser />,
+                path: 'user/add'
               }
             ]
           },

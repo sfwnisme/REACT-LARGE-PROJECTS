@@ -34,7 +34,7 @@ const Register = () => {
     const value = e.target.value
     const state = e.target.name
     setForm((prev) => ({ ...prev, [state]: value }))
-  }, [form])
+  }, [])
   //:::
 
   //:::
