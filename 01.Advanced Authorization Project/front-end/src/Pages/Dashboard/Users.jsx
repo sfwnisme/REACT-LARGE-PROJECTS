@@ -14,6 +14,7 @@ const Users = () => {
   const [users, setUsers] = useState([])
   const [currentUser, setCurrentUser] = useState([])
   const [reloadUsers, setReloadUsers] = useState(true)
+  console.log(typeof users[0]?.role)
   //:::
 
   //:::
@@ -54,12 +55,14 @@ const Users = () => {
 
   //:::
   const handleDelete = async (id) => {
-    setReloadUsers((prev) => !prev)
-    try {
-      const res = AXIOS.delete(`${USER}/${id}`)
-      console.log(':::delete user done:::', res)
-    } catch (error) {
-      console.log('+++delete user error+++', error)
+    if (currentUser.id !== id) {
+      setReloadUsers((prev) => !prev)
+      try {
+        const res = AXIOS.delete(`${USER}/${id}`)
+        console.log(':::delete user done:::', res)
+      } catch (error) {
+        console.log('+++delete user error+++', error)
+      }
     }
   }
   //:::
@@ -68,31 +71,43 @@ const Users = () => {
   const refreshBtn = () => setReloadUsers((prev) => !prev)
   //:::
 
-  //::: filter users not equal the current user(signed user)
-  const usersExceptCurrentUser = users.filter((user) => user.id != currentUser.id)
   //:::
 
   //:::
-  const usersList = usersExceptCurrentUser.map((user) => (
+  const usersList = users.map((user) => (
     <tr key={user?.id}>
       <td>{user?.id}</td>
-      <td>{user?.name}</td>
+      <td>{user?.id === currentUser.id ? <>{user?.name} <Badge>you</Badge></> : user?.name}</td>
       <td>{user?.email}</td>
       <td>
         <Badge bg='info'>
           {getUserType(user?.role)}
         </Badge>
       </td>
+
       <td>
-        <Button variant="danger" size="sm" onClick={() => handleDelete(user?.id)} >
-          <FontAwesomeIcon size="xs" icon={faTrash} />
-        </Button>
-        <span> </span>
-        <NavLink to={`${user?.id}`}>
-          <Button variant="primary" size="sm">
-            <FontAwesomeIcon size="xs" icon={faPen} />
-          </Button>
-        </NavLink>
+        {
+          user?.role == '1995'
+            ? < NavLink to={`${user?.id}`}>
+              <Button variant="primary" size="sm">
+                <FontAwesomeIcon size="xs" icon={faPen} />
+              </Button>
+            </NavLink>
+            : <>
+              {
+                currentUser?.id !== user?.id &&
+                <Button variant="danger" size="sm" onClick={() => handleDelete(user?.id)} >
+                  <FontAwesomeIcon size="xs" icon={faTrash} />
+                </Button>
+              }
+              <span> </span>
+              < NavLink to={`${user?.id}`}>
+                <Button variant="primary" size="sm">
+                  <FontAwesomeIcon size="xs" icon={faPen} />
+                </Button>
+              </NavLink>
+            </>
+        }
       </td>
     </tr >
   ))
@@ -109,7 +124,7 @@ const Users = () => {
         </NavLink>
       </div>
       <br />
-      <Table striped bordered hover responsive="sm">
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>ID</th>
@@ -123,11 +138,15 @@ const Users = () => {
         </thead>
         <tbody>
           {
-            users.length != 0
-              ? users.length > 1
-                ? usersList
-                : <tr><td colSpan={12} style={{ textAlign: 'center' }}>No users</td></tr>
-              : <tr><td colSpan={12} style={{ textAlign: 'center' }}>Loading....</td></tr>
+            users.length === 0 ? (
+              <tr>
+                <td colSpan={12} style={{ textAlign: 'center' }}>Loading....</td>
+              </tr>
+            ) : users.length === 0 ? (
+              <tr>
+                <td colSpan={12} style={{ textAlign: 'center' }}>No users found</td>
+              </tr>
+            ) : (usersList)
           }
         </tbody>
       </Table>

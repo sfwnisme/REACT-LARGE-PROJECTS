@@ -42,6 +42,7 @@ const Login = () => {
   }
   //:::
 
+
   //:::
   const Submit = async (e) => {
     e.preventDefault()
@@ -52,8 +53,7 @@ const Login = () => {
       setLoading(false)
       const token = res?.data?.token
       cookie.set('e-commerce', token)
-      location.pathname = 'dashboard/users'
-      console.log(navigate.state)
+      location.pathname = 'dashboard'
       console.log(':::login done:::', res)
     } catch (error) {
       if (error?.response?.status)

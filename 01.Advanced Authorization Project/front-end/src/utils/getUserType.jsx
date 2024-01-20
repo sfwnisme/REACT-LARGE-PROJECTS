@@ -1,5 +1,5 @@
 const getUserType = (userCode) => {
-  let userType
+  let userType = 'unset'
   switch (userCode) {
     case '1995':
       userType = 'admin'
@@ -11,10 +11,17 @@ const getUserType = (userCode) => {
       userType = 'writer'
       break;
     default:
-      userType = 'writer'
+      userType = 'unset'
       break;
   }
   return userType
 }
 
 export default getUserType
+
+/*:::NOTE-------------------
+|---------------------------
+| this util function handle the user's type depends on the user code from the database
+| the userCode type is string
+|---------------------------
+*/

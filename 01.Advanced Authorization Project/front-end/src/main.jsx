@@ -12,9 +12,10 @@ import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import RequireAuth from './Pages/Auth/RequireAuth.jsx'
 import User from './Pages/Dashboard/User.jsx'
 import AddUser from './Pages/Dashboard/AddUser.jsx'
+import Writer from './Pages/Dashboard/Writer.jsx'
 
 
-const router = createBrowserRouter([
+const roueter = createBrowserRouter([
   {
     element: <App />,
     path: '/',
@@ -39,6 +40,67 @@ const router = createBrowserRouter([
             element: <Dashboard />,
             children: [
               {
+                element: <RequireAuth allowedRole={['1995']} />,
+                children: [
+                  {
+                    element: <Users />,
+                    path: 'users'
+                  },
+                  {
+                    element: <User />,
+                    path: 'users/:id'
+                  },
+                  {
+                    element: <AddUser />,
+                    path: 'user/add'
+                  }
+                ]
+              },
+              {
+                element: <RequireAuth allowedRole={['1995', '1996']} />,
+                children: [
+                  {
+                    element: <Writer />,
+                    path: 'writer'
+                  }
+                ]
+              }
+            ]
+          },
+        ]
+      },
+      {
+        element: <GoogleCallBack />,
+        path: '/auth/google/callback'
+      }
+    ]
+  }
+])
+const router = createBrowserRouter([
+  {
+    element: <App />,
+    path: '/',
+    children: [
+      {
+        element: <HomePage />,
+        index: true,
+      },
+      {
+        element: <Login />,
+        path: 'login',
+      },
+      {
+        element: <Register />,
+        path: 'register',
+      },
+      {
+        path: 'dashboard',
+        element: <Dashboard />,
+        children: [
+          {
+            element: <RequireAuth allowedRole={['1995']} />,
+            children: [
+              {
                 element: <Users />,
                 path: 'users'
               },
@@ -52,6 +114,15 @@ const router = createBrowserRouter([
               }
             ]
           },
+          {
+            element: <RequireAuth allowedRole={['1995', '1996']} />,
+            children: [
+              {
+                element: <Writer />,
+                path: 'writer'
+              }
+            ]
+          }
         ]
       },
       {

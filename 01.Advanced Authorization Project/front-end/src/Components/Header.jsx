@@ -1,5 +1,5 @@
 // import { NavLink } from 'react-router-dom';
-import { Badge, Button, ButtonGroup } from 'react-bootstrap';
+import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import Logout from '../Pages/Auth/Logout';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -34,14 +34,19 @@ const Header = () => {
     <header>
       <Navbar expand="lg" className="">
         <Container fluid>
-          <Navbar.Brand >
+          <Navbar.Brand style={{ display: 'flex' }} >
             SFWN
-            { //display the user details
+            <span> </span>
+            {
               token &&
-              <>
-                <span> </span>
-                <Badge bg="primary">user | {currentUser.name}</Badge>
-              </>
+              <DropdownButton
+                size='sm'
+                title={currentUser.name}
+              >
+                <Dropdown.Item size='sm'>
+                  <Logout />
+                </Dropdown.Item>
+              </DropdownButton>
             }
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -67,7 +72,6 @@ const Header = () => {
                 token
                   ?
                   <>
-                    <Logout />
                   </>
                   :
                   <>

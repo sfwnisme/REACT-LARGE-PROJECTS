@@ -1,18 +1,18 @@
 import Cookie from 'cookie-universal'
 import { LOGOUT } from '../../Api/API'
-import Button from 'react-bootstrap/Button'
 import { AXIOS } from '../../Api/AXIOS.JSX'
+import { useState } from 'react'
+import PageLoading from '../../Loading/PageLoading/PageLoading'
 
 const Logout = () => {
-
   //:::
   const cookie = Cookie()
   //:::
 
   //:::
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      const res = AXIOS.get(`/${LOGOUT}`)
+      const res = await AXIOS.get(`/${LOGOUT}`)
       cookie.remove('e-commerce')
       location.pathname = '/login'
       console.log(':::logout done:::', res)
@@ -22,7 +22,13 @@ const Logout = () => {
   }
   //:::
 
-  return <Button variant='danger' size='sm' onClick={handleLogout}>Logout</Button>
+  return (
+    <>
+      <span onClick={handleLogout}>
+        Logout
+      </span >
+    </>
+  )
 
 }
 

@@ -21,6 +21,10 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   //:::
 
+  console.log(form.name)
+  console.log(form.email)
+  console.log(form.password)
+
   //:::
   const cookie = Cookie()
   //:::

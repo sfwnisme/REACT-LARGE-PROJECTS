@@ -25,7 +25,6 @@ const AddUser = () => {
   //:::
   const Submit = async (e) => {
     e.preventDefault()
-    setDisplayErr(true)
     try {
       const res = await AXIOS.post(`/${USER}/add`, form)
       setDisplayErr(false)
@@ -85,7 +84,6 @@ const AddUser = () => {
             }
           </Form>
         </div>
-
       </div>
     </div>
   )

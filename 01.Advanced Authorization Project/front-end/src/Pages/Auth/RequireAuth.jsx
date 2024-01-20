@@ -2,11 +2,15 @@ import axios from 'axios'
 import Cookie from 'cookie-universal'
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet, useNavigate } from 'react-router-dom'
-import { BASE_URL, USERS } from '../../Api/API'
+import { BASE_URL, USER } from '../../Api/API'
 import PageLoading from '../../Loading/PageLoading/PageLoading'
-const RequireAuth = () => {
+import Err403 from '../Dashboard/Err403'
+
+const RequireAuth = (props) => {
   //:::
-  const [users, setUsers] = useState('')
+  const [user, setUser] = useState('')
+
+  console.log(props)
   //:::
 
   //:::
@@ -20,16 +24,16 @@ const RequireAuth = () => {
 
   //:::
   useEffect(() => {
-    axios.get(`${BASE_URL}/${USERS}`, {
+    axios.get(`${BASE_URL}/${USER}`, {
       headers: {
         Authorization: 'Bearer ' + token
       }
     }).then(({ data }) => {
-      setUsers(data)
+      setUser(data)
       console.log(':::get user from require auth done:::', data)
     }).catch((error) => {
       console.log('+++get users from require auth error+++', error)
-      setUsers('')
+      setUser('')
       cookie.remove('e-commerce')
       navigate('/login')
       location.reload()
@@ -38,9 +42,21 @@ const RequireAuth = () => {
   //:::
 
 
-  return token
-    ? users ? <Outlet /> : <PageLoading />
-    : <Navigate replace={true} to='/login' />
+  // return token
+  //   ? user === '' ? <Outlet /> : <PageLoading />
+  //   : <Navigate replace={true} to='/login' />
+
+  return token ? (
+    user === '' ? (
+      <PageLoading />
+    ) : props?.allowedRole?.includes(user.role) ? (
+      <Outlet />
+    ) : (
+      <Err403 />
+    )
+  ) : (
+    <Navigate to={'/login'} replace={true} />
+  )
 }
 
 export default RequireAuth
