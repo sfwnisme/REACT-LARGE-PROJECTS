@@ -9,6 +9,7 @@ import Cookie from 'cookie-universal';
 import { useEffect, useState } from 'react';
 import { AXIOS } from '../Api/AXIOS.JSX';
 import { USER } from '../Api/API';
+import getUserType from '../utils/getUserType';
 const Header = () => {
   //:::
   const [currentUser, setCurrentUser] = useState({})
@@ -41,7 +42,7 @@ const Header = () => {
               token &&
               <DropdownButton
                 size='sm'
-                title={currentUser.name}
+                title={`[${getUserType(currentUser?.role)}] ${currentUser?.name || "Loading..."}`}
               >
                 <Dropdown.Item size='sm'>
                   <Logout />
@@ -91,7 +92,7 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </header>
+    </header >
 
   );
 }

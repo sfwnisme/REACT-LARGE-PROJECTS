@@ -11,7 +11,7 @@ const getUserType = (userCode) => {
       userType = 'writer'
       break;
     default:
-      userType = 'unset'
+      userType = 'loading...'
       break;
   }
   return userType

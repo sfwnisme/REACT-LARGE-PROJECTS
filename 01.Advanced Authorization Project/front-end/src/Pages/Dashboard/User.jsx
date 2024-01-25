@@ -3,6 +3,7 @@ import { AXIOS } from '../../Api/AXIOS.JSX'
 import { USER } from '../../Api/API'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const User = () => {
   //:::
@@ -16,6 +17,10 @@ const User = () => {
 
   //:::
   const nameRef = useRef(null)
+  //:::
+
+  //:::
+  const navigate = useNavigate()
   //:::
 
   //:::get the user id | you can also using useParams() from react-router-dom
@@ -44,6 +49,7 @@ const User = () => {
       .catch((error) => {
         setDisable(false)
         console.log('+++get user error+++', error)
+        navigate('/this-page-your-trye-is-not-found', { replace: true }) // if there not user id go for create none exist route to invoke the error page
       })
       .finally(() => {
         setDisable(false)

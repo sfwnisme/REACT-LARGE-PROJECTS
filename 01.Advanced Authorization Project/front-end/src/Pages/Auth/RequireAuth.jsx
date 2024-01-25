@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import axios from 'axios'
 import Cookie from 'cookie-universal'
 import { useEffect, useState } from 'react'
@@ -41,10 +42,17 @@ const RequireAuth = (props) => {
   }, [])
   //:::
 
+  //::: another way to render the output
+  // if (token)
+  //   if (user === '')
+  //     return <PageLoading />
+  //   else
+  //     if (props?.allowedRole.includes(user?.role))
+  //       return <Outlet />
+  //     else
+  //       <Err403 />
 
-  // return token
-  //   ? user === '' ? <Outlet /> : <PageLoading />
-  //   : <Navigate replace={true} to='/login' />
+  // return <Navigate to={'/login'} replace={true} />
 
   return token ? (
     user === '' ? (
@@ -52,7 +60,7 @@ const RequireAuth = (props) => {
     ) : props?.allowedRole?.includes(user.role) ? (
       <Outlet />
     ) : (
-      <Err403 />
+      <Err403 role={user?.role} />
     )
   ) : (
     <Navigate to={'/login'} replace={true} />

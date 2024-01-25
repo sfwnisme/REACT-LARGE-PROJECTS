@@ -13,6 +13,7 @@ import RequireAuth from './Pages/Auth/RequireAuth.jsx'
 import User from './Pages/Dashboard/User.jsx'
 import AddUser from './Pages/Dashboard/AddUser.jsx'
 import Writer from './Pages/Dashboard/Writer.jsx'
+import Err404 from './Pages/Auth/Err404.jsx'
 
 
 const roueter = createBrowserRouter([
@@ -76,10 +77,12 @@ const roueter = createBrowserRouter([
     ]
   }
 ])
+
 const router = createBrowserRouter([
   {
     element: <App />,
     path: '/',
+    errorElement: <Err404 />,
     children: [
       {
         element: <HomePage />,
@@ -94,32 +97,37 @@ const router = createBrowserRouter([
         path: 'register',
       },
       {
-        path: 'dashboard',
-        element: <Dashboard />,
+        element: <RequireAuth allowedRole={['1995', '1996']} />,
         children: [
           {
-            element: <RequireAuth allowedRole={['1995']} />,
+            path: 'dashboard',
+            element: <Dashboard />,
             children: [
               {
-                element: <Users />,
-                path: 'users'
+                element: <RequireAuth allowedRole={['1995']} />,
+                children: [
+                  {
+                    element: <Users />,
+                    path: 'users'
+                  },
+                  {
+                    element: <User />,
+                    path: 'users/:id'
+                  },
+                  {
+                    element: <AddUser />,
+                    path: 'user/add'
+                  }
+                ]
               },
               {
-                element: <User />,
-                path: 'users/:id'
-              },
-              {
-                element: <AddUser />,
-                path: 'user/add'
-              }
-            ]
-          },
-          {
-            element: <RequireAuth allowedRole={['1995', '1996']} />,
-            children: [
-              {
-                element: <Writer />,
-                path: 'writer'
+                element: <RequireAuth allowedRole={['1995', '1996']} />,
+                children: [
+                  {
+                    element: <Writer />,
+                    path: 'writer'
+                  }
+                ]
               }
             ]
           }
