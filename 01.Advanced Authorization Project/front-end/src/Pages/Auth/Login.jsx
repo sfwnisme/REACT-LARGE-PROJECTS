@@ -49,13 +49,16 @@ const Login = () => {
     try {
       setLoading(true)
       const res = await axios.post(`${BASE_URL}/${LOGIN}`, form)
+      const role = res.data.user.role
+      const go = role === '1995' ? 'dashboard/users' : role === '1996' ? 'dashboard/writer' : '/'
+      const token = res?.data?.token
       setErr('')
       setLoading(false)
-      const token = res?.data?.token
+      location.pathname = go
       cookie.set('e-commerce', token)
-      location.pathname = 'dashboard'
-      console.log(':::login done:::', res)
+      console.log(':::lDogin done:::', res)
     } catch (error) {
+
       if (error?.response?.status)
         setErr('Invalid mail or password')
       else
