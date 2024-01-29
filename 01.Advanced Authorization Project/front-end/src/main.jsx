@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import HomePage from './Pages/Website/HomePage.jsx'
 import Login from './Pages/Auth/Login.jsx'
 import Register from './Pages/Auth/Register.jsx'
@@ -16,6 +16,8 @@ import Writer from './Pages/Dashboard/Writer.jsx'
 import Err404 from './Pages/Auth/Err404.jsx'
 import RequireBack from './Pages/Auth/RequireBack.jsx'
 import Categories from "./Pages/Dashboard/Categories.jsx";
+import Welcome from "./Pages/Dashboard/Welcome.jsx";
+import AddCategory from './Pages/Dashboard/AddCategory.jsx'
 
 //::: users codes
 const admin = ['1995']
@@ -30,66 +32,74 @@ console.log(adminAllowed)
 
 const router = createBrowserRouter([
     {
-        element: <App/>,
+        element: <App />,
         path: '/',
-        errorElement: <Err404/>,
+        errorElement: <Err404 />,
         children: [
             {
-                element: <HomePage/>,
+                element: <HomePage />,
                 index: true,
             },
             {
-                element: <RequireBack/>,
+                element: <RequireBack />,
                 children: [
                     {
-                        element: <Login/>,
+                        element: <Login />,
                         path: 'login',
                     },
                     {
-                        element: <Register/>,
+                        element: <Register />,
                         path: 'register',
                     },
                 ]
             },
 
             {
-                element: <RequireAuth allowedRole={adminAllowed}/>,
+                element: <RequireAuth allowedRole={adminAllowed} />,
                 children: [
                     {
                         path: 'dashboard',
-                        element: <Dashboard/>,
+                        element: <Dashboard />,
                         children: [
                             {
-                                element: <RequireAuth allowedRole={writerAllowed}/>,
+                                element: <Welcome />,
+                                index: true,
+                            },
+                            {
+                                element: <RequireAuth allowedRole={writerAllowed} />,
                                 children: [
                                     {
-                                        element: <Users/>,
+                                        element: <Users />,
                                         path: 'users'
                                     },
                                     {
-                                        element: <User/>,
+                                        element: <User />,
                                         path: 'users/:id'
                                     },
                                     {
-                                        element: <AddUser/>,
+                                        element: <AddUser />,
                                         path: 'user/add'
                                     }
                                 ]
                             },
                             {
-                                element: <RequireAuth allowedRole={productManagerAllowed}/>,
+                                element: <RequireAuth allowedRole={productManagerAllowed} />,
                                 children: [
                                     {
-                                        element: <Categories/>,
+                                        element: <Categories />,
                                         path: 'categories'
+                                    },
+                                    {
+                                        element: <AddCategory />,
+                                        path: 'category/add'
                                     }
                                 ]
                             },
                             {
-                                element: <RequireAuth allowedRole={writerAllowed}/>,
+                                element: <RequireAuth allowedRole={writerAllowed} />,
                                 children: [
                                     {
-                                        element: <Writer/>,
+                                        element: <Writer />,
                                         path: 'writer'
                                     }
                                 ]
@@ -99,7 +109,7 @@ const router = createBrowserRouter([
                 ]
             },
             {
-                element: <GoogleCallBack/>,
+                element: <GoogleCallBack />,
                 path: '/auth/google/callback'
             }
         ]
@@ -108,6 +118,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     // <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
     // </React.StrictMode>,
 )
