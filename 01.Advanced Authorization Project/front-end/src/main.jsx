@@ -18,6 +18,7 @@ import RequireBack from './Pages/Auth/RequireBack.jsx'
 import Categories from "./Pages/Dashboard/Categories.jsx";
 import Welcome from "./Pages/Dashboard/Welcome.jsx";
 import AddCategory from './Pages/Dashboard/AddCategory.jsx'
+import Category from './Pages/Dashboard/Category.jsx'
 
 //::: users codes
 const admin = ['1995']
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
                                     {
                                         element: <Categories />,
                                         path: 'categories'
+                                    },
+                                    {
+                                        element: <Category />,
+                                        path: 'categories/:id'
                                     },
                                     {
                                         element: <AddCategory />,

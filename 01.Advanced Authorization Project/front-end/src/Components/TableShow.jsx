@@ -11,18 +11,29 @@ import { useEffect, useState } from "react";
 const TableShow = (props) => {
     //:::
     const [enableToast, setEnableToast] = useState(false)
+    const [disable, setDisable] = useState(true)
+    //:::
 
+    //:::
+    useEffect(() => {
+        setDisable(false)
+    }, [])
+    //:::
+
+    //:::
     useEffect(() => {
         const timer = setTimeout(() => setEnableToast(false), [2000])
         return () => clearTimeout(timer)
     }, [enableToast])
     //:::
 
-    //::: handle props
+    //::: handle props 
     let { header, data, del, setRefreshData, currentUser } = props
-    // this value only for users table so we shoud add a default value "{id: ""}" to avoid errors
-    // creating object with empty id value as a default value to avoid calling undefined object's key
-    currentUser = currentUser || { id: ''/* make it empty to avoid undefined values */ }
+    currentUser = currentUser || { id: '' }
+    /** BRIEF
+     * this value only for users table so we shoud add a default value "{id: ""}" to avoid errors
+     * creating object with empty id value as a default value to avoid calling undefined object's key
+     */
     //:::
 
     //::: table header
@@ -31,13 +42,18 @@ const TableShow = (props) => {
 
     //::: handle delete function
     const handleDelete = async (id) => {
+        setDisable(true)
         try {
             const res = await AXIOS.delete(`/${del}/${id}`)
+            setDisable(false)
             setRefreshData((prev) => !prev)
             setEnableToast((prev) => !prev)
             console.log(':::delete data done:::', res)
         } catch (error) {
+            setDisable(false)
             console.log('+++delete data error+++', error)
+        } finally {
+            setDisable(false)
         }
     }
     //:::
@@ -53,15 +69,15 @@ const TableShow = (props) => {
             ))}
             <td style={{ width: '90px' }}>
                 <NavLink to={`${item?.id}`}>
-                    <Button variant={"primary"} size={"sm"}>
-                        <FontAwesomeIcon icon={faEdit} size={"xs"} />
+                    <Button variant={"primary"} size={"sm"} disabled={disable}>
+                        {disable ? '...' : <FontAwesomeIcon icon={faEdit} size={"xs"} />}
                     </Button>
                 </NavLink>
                 <span> </span>
                 {
                     currentUser.id !== item.id &&
-                    <Button variant={"danger"} size={"sm"} onClick={() => handleDelete(item?.id)} id={item?.id}>
-                        <FontAwesomeIcon icon={faTrash} size={"xs"} />
+                    <Button variant={"danger"} size={"sm"} onClick={() => handleDelete(item?.id)} id={item?.id} disabled={disable}>
+                        {disable ? '...' : <FontAwesomeIcon icon={faTrash} size={"xs"} />}
                     </Button>
                 }
             </td>

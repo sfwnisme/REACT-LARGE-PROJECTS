@@ -1,7 +1,7 @@
-import {useEffect, useRef, useState} from 'react'
-import {Alert, Button, Form} from 'react-bootstrap'
-import {AXIOS} from '../../Api/AXIOS.JSX'
-import {USER} from '../../Api/API'
+import { useEffect, useRef, useState } from 'react'
+import { Alert, Button, Form } from 'react-bootstrap'
+import { AXIOS } from '../../Api/AXIOS.JSX'
+import { USER } from '../../Api/API'
 
 const AddUser = () => {
     //:::
@@ -42,7 +42,7 @@ const AddUser = () => {
     const handleChange = (e) => {
         const value = e.target.value
         const name = e.target.name
-        setForm((prev) => ({...prev, [name]: value}))
+        setForm((prev) => ({ ...prev, [name]: value }))
     }
     //:::
 
@@ -54,17 +54,17 @@ const AddUser = () => {
                     <Form onSubmit={Submit}>
                         <Form.Group className="mb-4 input-container">
                             <Form.Control ref={nameRef} type='text' id="name" name='name' placeholder=""
-                                          value={form.name} onChange={handleChange} required/>
+                                value={form.name} onChange={handleChange} required />
                             <Form.Label htmlFor="name">Name</Form.Label>
                         </Form.Group>
                         <Form.Group className="mb-4 input-container">
                             <Form.Control type='email' id="email" name='email' placeholder="" value={form.email}
-                                          onChange={handleChange} required/>
+                                onChange={handleChange} required />
                             <Form.Label htmlFor="email">Email</Form.Label>
                         </Form.Group>
                         <Form.Group className="mb-4 input-container">
                             <Form.Control type='password' id="password" name='password' placeholder=""
-                                          value={form.password} onChange={handleChange} required/>
+                                value={form.password} onChange={handleChange} required />
                             <Form.Label htmlFor="password">Password</Form.Label>
                         </Form.Group>
                         <Form.Group className="mb-4 input-container">
