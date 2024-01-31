@@ -38,7 +38,15 @@ const Categories = () => {
 
     return (
         <div>
-            <TableShow header={header} data={categroies} del={CAT} setRefreshData={setRefreshData} />
+            <TableShow
+                header={header}
+                data={categroies}
+                del={CAT}
+                setRefreshData={setRefreshData}
+                title='Categories'
+                addTitle='Add Category'
+                addLink='/dashboard/category/add'
+            />
         </div>
     )
 }

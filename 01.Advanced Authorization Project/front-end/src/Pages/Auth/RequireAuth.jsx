@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
 import Cookie from 'cookie-universal'
-import {useEffect, useState} from 'react'
-import {Navigate, Outlet, useNavigate} from 'react-router-dom'
-import {BASE_URL, USER} from '../../Api/API'
+import { useEffect, useState } from 'react'
+import { Navigate, Outlet, useNavigate } from 'react-router-dom'
+import { BASE_URL, USER } from '../../Api/API'
 import PageLoading from '../../Loading/PageLoading/PageLoading'
 import Err403 from '../Dashboard/Err403'
 
@@ -27,7 +27,7 @@ const RequireAuth = (props) => {
             headers: {
                 Authorization: 'Bearer ' + token
             }
-        }).then(({data}) => {
+        }).then(({ data }) => {
             setUser(data)
             console.log(':::get user from require auth done:::', data)
         }).catch((error) => {
@@ -54,14 +54,14 @@ const RequireAuth = (props) => {
 
     return token ? (
         user === '' ? (
-            <PageLoading/>
+            <PageLoading />
         ) : props?.allowedRole?.includes(user.role) ? (
-            <Outlet/>
+            <Outlet />
         ) : (
-            <Err403 role={user?.role}/>
+            <Err403 role={user?.role} />
         )
     ) : (
-        <Navigate to={'/login'} replace={true}/>
+        <Navigate to={'/login'} replace={true} />
     )
 }
 

@@ -1,35 +1,23 @@
 // import { NavLink } from 'react-router-dom';
-import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import Logout from '../Pages/Auth/Logout';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import Cookie from 'cookie-universal';
-import { useEffect, useState } from 'react';
-import { AXIOS } from '../Api/AXIOS.JSX';
-import { USER } from '../Api/API';
 import getUserType from '../utils/getUserType';
+import useSignedUser from '../Hooks/use-signed-user';
 const Header = () => {
-  //:::
-  const [currentUser, setCurrentUser] = useState({})
-  //:::
-
   //:::
   const cookie = Cookie()
   let token = cookie.get('e-commerce')
   //:::
 
   //:::
-  useEffect(() => {
-    AXIOS
-      .get(`${USER}`)
-      .then((data) => {
-        setCurrentUser(data.data)
-        console.log(':::get currentAuther done:::', data.data)
-      })
-  }, [token])
+  const { currentUser } = useSignedUser()
   //:::
+
 
   return (
     <header>

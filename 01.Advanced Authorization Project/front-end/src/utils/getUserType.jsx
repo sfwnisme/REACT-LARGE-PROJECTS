@@ -13,7 +13,7 @@ const getUserType = (userCode) => {
             userType = 'Admin'
             break;
         case '1999':
-            userType = 'Product Manager'
+            userType = 'PM'
             break;
         case '1996':
             userType = 'Writer'

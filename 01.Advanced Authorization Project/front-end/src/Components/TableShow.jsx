@@ -28,7 +28,7 @@ const TableShow = (props) => {
     //:::
 
     //::: handle props 
-    let { header, data, del, setRefreshData, currentUser } = props
+    let { header, data, del, setRefreshData, currentUser, title, addLink, addTitle } = props
     currentUser = currentUser || { id: '' }
     /** BRIEF
      * this value only for users table so we shoud add a default value "{id: ""}" to avoid errors
@@ -115,6 +115,15 @@ const TableShow = (props) => {
 
     return (
         <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+                <h1>{title}</h1>
+                <NavLink to={addLink}>
+                    <Button variant="outline-primary" size="sm">
+                        {addTitle}
+                    </Button>
+                </NavLink>
+            </div>
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
@@ -139,15 +148,3 @@ const TableShow = (props) => {
 
 export default TableShow
 
-
-//    data.length === 0 ? (
-//        <tr>
-//            <td colSpan={12} style={{textAlign: 'center'}}>Loading....</td>
-//        </tr>
-//        ) : data.length === 0 ? (
-//            <tr>
-//                <td colSpan={12} style={{textAlign: 'center'}}>No data found</td>
-//            </tr>
-//            ) : (dataShow)
-//
-//}

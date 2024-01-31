@@ -1,41 +1,28 @@
-import { useEffect, useRef, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { AXIOS } from '../../Api/AXIOS.JSX'
 import { CAT } from '../../Api/API'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import usePathname from '../../Hooks/use-pathname'
+import useSingleCategory from '../../Hooks/use-single-category'
 
 const Category = () => {
   //:::
-  const [title, setTitle] = useState('')
-  const [image, setImage] = useState('')
-  const [disable, setDisable] = useState(true)
-  const focusRef = useRef(null)
-  //:::
-
-  //:::
-  const { id } = useParams()
-  const { pathname } = useLocation()
+  const { id } = usePathname()
   const navigate = useNavigate()
   //:::
 
+  //::: get category using custom hook make code cleaner
+  const {
+    title,
+    setTitle,
+    image,
+    setImage,
+    disable,
+    setDisable,
+    focusRef
+  } = useSingleCategory()
   //:::
-  useEffect(() => {
-    setDisable(true)
-    try {
-      let res = AXIOS.get(`${CAT}/${id}`)
-      setTitle(res?.data?.title)
-      setDisable(false)
-      console.log(':::get category done:::', res)
-    } catch (error) {
-      setDisable(false)
-      navigate(`${pathname}/👈😉ERROR404/`, { replace: true })
-      console.log('+++get category error+++', error)
-    } finally {
-      setDisable(false)
-    }
-    focusRef.current.focus()
-  }, [id])
-  //:::
+
 
   //:::
   const Submit = async (e) => {
@@ -47,6 +34,7 @@ const Category = () => {
     try {
       const res = await AXIOS.post(`${CAT}/edit/${id}`, formData)
       setDisable(false)
+      navigate('/dashboard/categories')
       console.log(':::edit category done:::', res)
     } catch (error) {
       setDisable(false)

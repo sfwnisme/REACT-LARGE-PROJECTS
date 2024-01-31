@@ -40,6 +40,7 @@ const router = createBrowserRouter([
             {
                 element: <HomePage />,
                 index: true,
+
             },
             {
                 element: <RequireBack />,
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
                                     },
                                     {
                                         element: <User />,
-                                        path: 'users/:id'
+                                        path: 'users/:id',
                                     },
                                     {
                                         element: <AddUser />,
