@@ -1,39 +1,15 @@
-import { useEffect, useState } from "react"
 import { USER, USERS } from "../../Api/API"
-import Button from 'react-bootstrap/Button'
-import Cookie from "cookie-universal"
-import { AXIOS } from "../../Api/AXIOS.JSX"
 import TableShow from "../../Components/TableShow.jsx";
 import useSignedUser from "../../Hooks/use-signed-user.jsx"
+import useGetData from "../../Hooks/use-get-data.jsx"
 
 const Users = () => {
-    //:::states
-    const [users, setUsers] = useState([])
-    const [refreshData, setRefreshData] = useState(true)
-    //:::
-
-    //:::
-    const cookie = Cookie()
-    const token = cookie.get('e-commerce')
-    //:::
-
     //:::usnig this hook instead of fetching data inside the component
     const { currentUser } = useSignedUser()
     //:::
 
     //:::
-    useEffect(() => {
-        try {
-            AXIOS
-                .get(`/${USERS}`)
-                .then((data) => {
-                    setUsers(data.data)
-                    console.log(':::get users done:::', data)
-                })
-        } catch (error) {
-            console.log('+++get users error++', error)
-        }
-    }, [token, refreshData])
+    const { data: users, setRefreshData } = useGetData(USERS)
     //:::
 
     //:::

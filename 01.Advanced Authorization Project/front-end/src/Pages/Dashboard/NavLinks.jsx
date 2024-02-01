@@ -1,4 +1,4 @@
-import { faBookOpenReader, faPlus, faLayerGroup, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpenReader, faPlus, faLayerGroup, faUsers, faBox } from "@fortawesome/free-solid-svg-icons";
 
 export const links = [
     {
@@ -26,6 +26,20 @@ export const links = [
         id: '4',
         name: 'Add Category',
         path: '/dashboard/category/add',
+        icon: faPlus,
+        role: ['1995', '1999']
+    },
+    {
+        id: '5',
+        name: 'Products',
+        path: '/dashboard/products',
+        icon: faBox,
+        role: ['1995', '1999']
+    },
+    {
+        id: '6',
+        name: 'Add Product',
+        path: '/dashboard/product/add',
         icon: faPlus,
         role: ['1995', '1999']
     },

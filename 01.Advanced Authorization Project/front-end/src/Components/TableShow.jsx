@@ -9,6 +9,15 @@ import { AXIOS } from "../Api/AXIOS.JSX";
 import { useEffect, useState } from "react";
 
 const TableShow = (props) => {
+    //::: handle props 
+    let { header, data, del, setRefreshData, currentUser, title, addLink, addTitle } = props
+    currentUser = currentUser || { id: '' }
+    /** BRIEF
+     * this value only for users table so we shoud add a default value "{id: ""}" to avoid errors
+     * creating object with empty id value as a default value to avoid calling undefined object's key
+     */
+    //:::
+
     //:::
     const [enableToast, setEnableToast] = useState(false)
     const [disable, setDisable] = useState(true)
@@ -27,14 +36,6 @@ const TableShow = (props) => {
     }, [enableToast])
     //:::
 
-    //::: handle props 
-    let { header, data, del, setRefreshData, currentUser, title, addLink, addTitle } = props
-    currentUser = currentUser || { id: '' }
-    /** BRIEF
-     * this value only for users table so we shoud add a default value "{id: ""}" to avoid errors
-     * creating object with empty id value as a default value to avoid calling undefined object's key
-     */
-    //:::
 
     //::: table header
     const headerShow = header.map((head, index) => <th key={index}>{head?.name}</th>)

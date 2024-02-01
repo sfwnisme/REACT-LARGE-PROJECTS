@@ -19,12 +19,14 @@ import Categories from "./Pages/Dashboard/Categories.jsx";
 import Welcome from "./Pages/Dashboard/Welcome.jsx";
 import AddCategory from './Pages/Dashboard/AddCategory.jsx'
 import Category from './Pages/Dashboard/Category.jsx'
+import Products from './Pages/Dashboard/Products.jsx'
+import AddProduct from './Pages/Dashboard/AddProduct.jsx'
 
 //::: users codes
 const admin = ['1995']
 const productManager = ['1999']
 const writer = ['1996']
-const user = ['2001']
+// const user = ['2001']
 const adminAllowed = [...admin, ...writer, ...productManager]
 const productManagerAllowed = [...admin, ...productManager]
 const writerAllowed = [...admin, ...writer]
@@ -87,6 +89,7 @@ const router = createBrowserRouter([
                             {
                                 element: <RequireAuth allowedRole={productManagerAllowed} />,
                                 children: [
+                                    //::: categories
                                     {
                                         element: <Categories />,
                                         path: 'categories'
@@ -98,6 +101,15 @@ const router = createBrowserRouter([
                                     {
                                         element: <AddCategory />,
                                         path: 'category/add'
+                                    },
+                                    //::: products
+                                    {
+                                        element: <Products />,
+                                        path: 'products',
+                                    },
+                                    {
+                                        element: <AddProduct />,
+                                        path: 'product/add'
                                     }
                                 ]
                             },

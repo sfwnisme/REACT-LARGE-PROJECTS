@@ -1,26 +1,18 @@
 import TableShow from "../../Components/TableShow.jsx";
-import { useEffect, useState } from "react";
-import { AXIOS } from "../../Api/AXIOS.JSX";
 import { CAT, CATS } from "../../Api/API.jsx";
+import useGetData from "../../Hooks/use-get-data.jsx";
 
 const Categories = () => {
-    //:::
-    const [categroies, setCategories] = useState([])
-    const [refreshData, setRefreshData] = useState(false)
-    //:::
-
-    //:::
-    useEffect(() => {
-        AXIOS
-            .get(`/${CATS}`)
-            .then((data) => {
-                setCategories(data.data)
-                console.log(':::get categories done:::', data)
-            })
-            .catch((error) => console.log('+++get categories error+++', error))
-    }, [refreshData])
+    //::: 
+    // get the read api request using dynamic custom hook
+    // it saves time and dupplicated code lines
+    const {
+        data: categories,
+        setRefreshData
+    } = useGetData(CATS)
     //:::
 
+    //:::
     let header = [
         {
             key: 'id',
@@ -35,12 +27,13 @@ const Categories = () => {
             name: 'image'
         }
     ]
+    //:::
 
     return (
         <div>
             <TableShow
                 header={header}
-                data={categroies}
+                data={categories}
                 del={CAT}
                 setRefreshData={setRefreshData}
                 title='Categories'
