@@ -1,12 +1,7 @@
 import { PRO, PROS } from '../../Api/API'
 import TableShow from '../../Components/TableShow'
-import useGetData from '../../Hooks/use-get-data'
 
 const Products = () => {
-  //:::
-  const { data: products, setRefreshData } = useGetData(PROS)
-  //:::
-
   //:::
   const header = [
     {
@@ -32,9 +27,8 @@ const Products = () => {
     <div>
       <TableShow
         header={header}
-        data={products}
-        del={PRO}
-        setRefreshData={setRefreshData}
+        dataEndpoint={PROS}
+        deleteEndpoint={PRO}
         title='Products'
         addLink="/dashboard/product/add"
         addTitle="Add product"
@@ -44,3 +38,5 @@ const Products = () => {
 }
 
 export default Products
+
+

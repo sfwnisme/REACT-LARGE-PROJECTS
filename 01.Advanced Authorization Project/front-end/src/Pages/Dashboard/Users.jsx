@@ -38,9 +38,8 @@ const Users = () => {
         <div>
             <TableShow
                 header={header}
-                data={users}
-                del={USER}
-                setRefreshData={setRefreshData}
+                dataEndpoint={USERS}
+                deleteEndpoint={USER}
                 currentUser={currentUser}
                 title='Users'
                 addTitle="Add User"

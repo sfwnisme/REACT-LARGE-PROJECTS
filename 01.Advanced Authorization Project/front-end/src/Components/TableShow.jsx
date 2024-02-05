@@ -7,15 +7,20 @@ import getUserType from "../utils/getUserType.jsx";
 import ToastMsg from "../Pages/Dashboard/ToastMsg.jsx";
 import { AXIOS } from "../Api/AXIOS.JSX";
 import { useEffect, useState } from "react";
+import useGetData from "../Hooks/use-get-data.jsx";
 
 const TableShow = (props) => {
     //::: handle props 
-    let { header, data, del, setRefreshData, currentUser, title, addLink, addTitle } = props
+    let { header, dataEndpoint, deleteEndpoint, currentUser, title, addLink, addTitle } = props
     currentUser = currentUser || { id: '' }
     /** BRIEF
      * this value only for users table so we shoud add a default value "{id: ""}" to avoid errors
      * creating object with empty id value as a default value to avoid calling undefined object's key
      */
+    //:::
+
+    //::: handle all the read endpoints for the tabel using this custom HOOK
+    const { data, isLoading, isEmpty, setRefreshData } = useGetData(dataEndpoint)
     //:::
 
     //:::
@@ -31,7 +36,8 @@ const TableShow = (props) => {
 
     //:::
     useEffect(() => {
-        const timer = setTimeout(() => setEnableToast(false), [2000])
+        const delay = 2000
+        const timer = setTimeout(() => setEnableToast(false), [delay])
         return () => clearTimeout(timer)
     }, [enableToast])
     //:::
@@ -45,7 +51,7 @@ const TableShow = (props) => {
     const handleDelete = async (id) => {
         setDisable(true)
         try {
-            const res = await AXIOS.delete(`/${del}/${id}`)
+            const res = await AXIOS.delete(`/${deleteEndpoint}/${id}`)
             setDisable(false)
             setRefreshData((prev) => !prev)
             setEnableToast((prev) => !prev)
@@ -110,14 +116,13 @@ const TableShow = (props) => {
     //:::
 
     //:::
-    const dataUndefined = <tr colSpan='12'><td>no data</td></tr>
+    const dataNotFound = <tr colSpan='12'><td colSpan={12} style={{ textAlign: 'center' }}>No data found</td></tr>
     //:::
 
 
     return (
         <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-
                 <h1>{title}</h1>
                 <NavLink to={addLink}>
                     <Button variant="outline-primary" size="sm">
@@ -133,10 +138,13 @@ const TableShow = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        data.length === 0 && dataLoading
-                    }
 
+                    {
+                        isLoading && dataLoading
+                    }
+                    {
+                        isEmpty && dataNotFound
+                    }
                     {dataShow}
                 </tbody>
             </Table>

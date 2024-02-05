@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AXIOS } from '../../Api/AXIOS.JSX'
 import { CATS, PRO } from '../../Api/API'
 import { Alert, Button, Form } from 'react-bootstrap'
@@ -6,6 +6,7 @@ import useGetData from '../../Hooks/use-get-data'
 
 //['category', 'title', 'description', 'About', 'price', 'discount'];
 const AddProduct = () => {
+  //:::
   const [form, setForm] = useState({
     category: 'Select Category',
     title: '',
@@ -15,8 +16,7 @@ const AddProduct = () => {
     About: '',
   })
   const [images, setImages] = useState([])
-  console.log(form)
-  console.log([...images])
+  //:::
 
   //:::
   const focusRef = useRef(null)
@@ -31,19 +31,22 @@ const AddProduct = () => {
     e.preventDefault()
 
     const formData = new FormData()
-    formData.append('category', form.category)
-    formData.append('title', form.title)
-    formData.append('description', form.description)
-    formData.append('price', form.price)
-    formData.append('discount', form.discount)
-    formData.append('About', form.About)
 
-    for (let i = 0; i <= images.length; i++) {
-      formData.append('images[]', images)
+    // loop the form state to append it to the formData dynamically
+    let formObjectToArray = Object.entries(form)
+    for (const [key, value] of formObjectToArray) {
+      console.log("key:", key, "value:", value)
+      formData.append(key, value)
+    }
+
+    // images must write this way "images[]" with empty array
+    // for the backend to understand it
+    for (let i = 0; i < images.length; i++) {
+      formData.append('images[]', images[i])
     }
 
     try {
-      const res = await AXIOS.post(`/${PRO}/add`, form)
+      const res = await AXIOS.post(`/${PRO}/add`, formData)
       console.log(':::add product done:::', res)
     } catch (error) {
       console.log('+++add product error+++', error)
@@ -65,7 +68,8 @@ const AddProduct = () => {
   //:::
 
   //:::
-  const showImages = [...images].map((img, index) =>
+  // URL.createObjectURL(image) - is an js API to convert image object file to image url
+  const showImages = images.map((img, index) =>
     <div key={index} className='d-flex gap-4 border border-gray p-2'>
       <img src={URL.createObjectURL(img)} width='100' height='auto' />
       <div className='d-flex flex-column'>
@@ -123,7 +127,7 @@ const AddProduct = () => {
 
             <Form.Group className="mb-4 input-container">
               <Form.Control type='file' id="images" name='images'
-                onChange={(e) => setImages(e.target.files)} multiple required />
+                onChange={(e) => setImages([...e.target.files])} multiple required />
               <Form.Label htmlFor="name">About</Form.Label>
             </Form.Group>
 
