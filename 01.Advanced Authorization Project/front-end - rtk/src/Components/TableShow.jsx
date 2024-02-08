@@ -1,13 +1,13 @@
 import Button from "react-bootstrap/Button";
 import { NavLink } from "react-router-dom";
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import getUserType from "../utils/getUserType.jsx";
-import ToastMsg from "../Pages/Dashboard/ToastMsg.jsx";
 import { useEffect, useState } from "react";
 import useGetData from "../Hooks/use-get-data.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import AlertMsg from "./AlertMsg.jsx";
 
 const TableShow = (props) => {
     //::: handle props 
@@ -15,54 +15,39 @@ const TableShow = (props) => {
     currentUser = currentUser || { id: '' }
     //:::
 
-    //::: toast and disable
+    //::: disable
     const [tableData, setTableDate] = useState([]) // handle better visualization for deleting
-    const [deletedID, setDeletedID] = useState(null)
-    const [enableToast, setEnableToast] = useState(false)
-    const [disable, setDisable] = useState(true)
+    const [deletedID, setDeletedID] = useState(null) // target the selected data
+    const [isMsg, setIsMsg] = useState(false)
     //:::
 
-    //::: get data from hooks 
-    const { data, isLoading, isEmpty } = useGetData(DISPATCHER, SELECTOR)
+    //::: 
+    const { data, isLoading: isLoadingData, isEmpty: isEmptyData, isError: isErrorData, success: successData, error: errorData } = useGetData(DISPATCHER, SELECTOR)
+
     useEffect(() => {
         setTableDate(data)
     }, [data])
     //:::
 
     //::: handle delete function
-    const { isLoadingDelete } = useSelector(DELETESELECTOR)
+    const { isLoading: isLoadingDelete, isSuccess: isSuccessDelete, isError: isErrorDelete, success: successDelete, error: errorDelete } = useSelector(DELETESELECTOR)
+    console.log(successDelete)
     const dispatch = useDispatch()
     const handleDelete = async (id) => {
         setDeletedID(id)
-        setDisable(true)
         try {
             const res = await dispatch(DELETEACTION(id)).unwrap()
-            setDisable(false)
             setDeletedID(null)
             setTableDate((prev) => prev.filter((pre) => pre.id !== id))
+            setIsMsg(true)
             console.log(`%c:::data with id ${id} deleted:::`, 'color: red', res)
         } catch (error) {
+            setIsMsg(true)
             console.log(`+++data with id ${id} could not be deleted+++`, error)
         } finally {
-            setDisable(false)
             setDeletedID(null)
         }
     }
-    //:::
-
-
-    //:::
-    useEffect(() => {
-        const delay = 2000
-        const timer = setTimeout(() => setEnableToast(false), [delay])
-        return () => clearTimeout(timer)
-    }, [enableToast])
-    //:::
-
-    //::: disable disabled buttons on rendering
-    useEffect(() => {
-        setDisable(false)
-    }, [])
     //:::
 
     //::: table header
@@ -81,14 +66,14 @@ const TableShow = (props) => {
             ))}
             <td style={{ width: '90px' }}>
                 <NavLink to={`${item?.id}`}>
-                    <Button variant={"primary"} size={"sm"} disabled={disable}>
+                    <Button variant={"primary"} size={"sm"} disabled={isLoadingData}>
                         <FontAwesomeIcon icon={faEdit} size={"xs"} />
                     </Button>
                 </NavLink>
                 <span> </span>
                 {
                     currentUser.id !== item.id &&
-                    <Button variant={"danger"} size={"sm"} onClick={() => handleDelete(item?.id)} id={item?.id} disabled={disable}>
+                    <Button variant={"danger"} size={"sm"} onClick={() => handleDelete(item?.id)} id={item?.id} disabled={isLoadingData || isLoadingDelete}>
                         {isLoadingDelete && deletedID === item?.id ? '...' : <FontAwesomeIcon icon={faTrash} size={"xs"} />}
                     </Button>
                 }
@@ -124,7 +109,6 @@ const TableShow = (props) => {
     const dataNotFound = <tr colSpan='12'><td colSpan={12} style={{ textAlign: 'center' }}>No data found</td></tr>
     //:::
 
-
     return (
         <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -145,19 +129,24 @@ const TableShow = (props) => {
                 <tbody>
 
                     {
-                        isLoading && dataLoading
+                        isLoadingData && dataLoading
                     }
                     {
-                        isEmpty && dataNotFound
+                        isEmptyData && dataNotFound
                     }
                     {
-                        !isLoading && dataShow
+                        !isLoadingData && dataShow
                     }
                 </tbody>
             </Table>
-            {enableToast &&
-                <ToastMsg data={'you have deleted it successfully'} />
-            }
+            <AlertMsg
+                message={successDelete?.message || errorDelete?.message}
+                isError={isErrorDelete}
+                isSuccess={isSuccessDelete}
+                isMsg={isMsg}
+                setIsMsg={setIsMsg}
+                delay='1000'
+            />
         </div>
     )
 }

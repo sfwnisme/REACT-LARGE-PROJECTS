@@ -1,20 +1,18 @@
-import { useEffect, useRef } from 'react'
-import { AXIOS } from '../../Api/AXIOS.JSX'
-import { USER } from '../../Api/API'
+import { useEffect, useRef, useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import usePathname from '../../Hooks/use-pathname'
-import useSingleUser from '../../Hooks/use-single-user'
-import { useDispatch } from 'react-redux'
-import { updateUser } from '../../rtk/features/users/usersSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSigleUser, signleUserSelector, updateUser, updateUserSelector } from '../../rtk/features/users/usersSlice'
+import AlertMsg from '../../Components/AlertMsg'
 
 const User = () => {
     //:::
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [role, setRole] = useState('')
     const focusRef = useRef(null)
-    //:::
-
-    //:::get the user id | you can also using useParams() from react-router-dom
-    const { id } = usePathname()
+    // const { id } = usePathname()
     //:::
 
     //::: focus on the name input after render
@@ -23,62 +21,43 @@ const User = () => {
     }, [])
     //:::
 
-    //::: get the user data using custom hook make clean code
-    const {
-        setName,
-        name,
-        setEmail,
-        email,
-        setRole,
-        role,
-        setDisable,
-        disable
-    } = useSingleUser()
-
     //:::
     const dispatch = useDispatch()
+    const { data: singleUser } = useSelector(signleUserSelector)
+    console.log(singleUser)
+
+    useEffect(() => {
+        dispatch(getSigleUser())
+    }, [dispatch])
+
+    useEffect(() => {
+        setName(singleUser?.name)
+        setEmail(singleUser?.email)
+        setRole(singleUser?.role)
+    }, [singleUser])
+    //:::
+
+    //:::
+    const { isLoading, isSuccess, isError, success, error } = useSelector(updateUserSelector)
+    console.log(isLoading)
     const Submit = async (e) => {
         e.preventDefault()
-        const initialData = { id, name, email, role }
+        const initialData = { name, email, role }
         try {
             const res = await dispatch(updateUser(initialData)).unwrap()
             window.location.pathname = '/dashboard/users'
             console.log(':::edit user done:::', res)
         } catch (error) {
             console.log('+++update user erro+++', error)
-        } finally {
-            setDisable(false)
         }
     }
-    //:::
-
-    //:::
-    // const Submit = async (e) => {
-    //     e.preventDefault()
-    //     setDisable(true)
-    //     try {
-    //         const res = await AXIOS.post(`${USER}/edit/${id}`, {
-    //             name,
-    //             email,
-    //             role
-    //         })
-    //         setDisable(false)
-    //         window.location.pathname = '/dashboard/users'
-    //         console.log(':::edit user done:::', res)
-    //     } catch (error) {
-    //         setDisable(false)
-    //         console.log('+++edit user error+++', error)
-    //     } finally {
-    //         setDisable(false)
-    //     }
-    // }
     //:::
 
     return (
         <div>
             <div className='form-container form-noimage'>
                 <div className='form-box'>
-                    <h1>Update User [{id}]</h1>
+                    <h1>Update User - {name}</h1>
                     <Form onSubmit={Submit}>
                         <Form.Group className="mb-4 input-container">
                             <Form.Control ref={focusRef} type='text' id="name" name='name' placeholder="" value={name} onChange={(e) => setName(e.target.value)} required />
@@ -98,15 +77,16 @@ const User = () => {
                                 <option value="1996">writer</option>
                             </Form.Select>
                         </Form.Group>
-                        <Button variant="primary" size="sm" type="submit" disabled={disable}>
-                            {disable ? 'Updating...' : 'Update'}
+                        <Button variant="primary" size="sm" type="submit" disabled={isLoading}>
+                            {isLoading ? 'Updating...' : 'Update'}
                         </Button>
                     </Form>
                 </div>
-
             </div>
+            <AlertMsg message={success?.message || error?.message} delay='2000' isError={isError} />
         </div>
     )
+
 }
 
 export default User

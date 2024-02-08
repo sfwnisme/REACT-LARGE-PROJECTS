@@ -1,16 +1,12 @@
-import axios from "axios"
 import { useState } from "react"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Alert from "react-bootstrap/Alert"
-import { BASE_URL, LOGIN } from "../../Api/API"
-import Loading from "../../Loading/Loading/Loading"
 import PageLoading from "../../Loading/PageLoading/PageLoading"
-import Cookie from 'cookie-universal'
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import GoogleBtn from "../../Components/GoogleBtn"
 import { useDispatch, useSelector } from "react-redux"
-import { loginUser, loginUserSelector } from "../../rtk/api/loginSlice"
+import { loginAction, loginUserSelector } from "../../rtk/api/loginSlice"
 
 const Login = () => {
 
@@ -43,7 +39,7 @@ const Login = () => {
   const Submit = async (e) => {
     e.preventDefault()
     try {
-      const res = await dispatch(loginUser(form)).unwrap()
+      const res = await dispatch(loginAction(form)).unwrap()
       const role = res?.user?.role
       const go = role === '1995' ? 'dashboard/users' : role === '1996' ? 'dashboard/writer' : '/'
       switch (role) {

@@ -14,14 +14,16 @@ const useGetData = (DISPATCHER, SELECTOR) => {
   const {
     data,
     isLoading,
-    error,
+    isEmpty,
+    isSuccess,
     isError,
-    isEmpty
+    success,
+    error,
   } = useSelector(SELECTOR)
-  console.log('::: GET DATA FROM useGetData.jsx:::', data)
+  console.log('::: GET DATA FROM useGetData.jsx:::', success)
   //:::
 
-  return { data, isLoading, error, isError, isEmpty, setRefreshData }
+  return { data, isLoading, isEmpty, isError, isSuccess, success, error, setRefreshData }
 }
 
 export default useGetData

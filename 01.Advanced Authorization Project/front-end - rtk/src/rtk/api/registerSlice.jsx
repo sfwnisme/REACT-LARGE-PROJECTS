@@ -16,7 +16,7 @@ const initialState = {
 //:::
 
 //::: register function
-export const registerUser = createAsyncThunk('register/registerUser', async (initialData, thunkAPI) => {
+export const registerAction = createAsyncThunk('register/registerAction', async (initialData, thunkAPI) => {
   const { rejectWithValue } = thunkAPI
   try {
     const res = await axios.post(`${BASE_URL}/${REGISTER}`, initialData)
@@ -36,14 +36,14 @@ const registerSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
+      .addCase(registerAction.pending, (state) => {
         state.isLoading = true
         state.isError = false
         state.error = null
         state.isSuccess = false
         state.success = null
       })
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
+      .addCase(registerAction.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isError = false
         state.error = null
@@ -51,7 +51,7 @@ const registerSlice = createSlice({
         state.success = 'You have created user account successfully'
         console.log('success', payload)
       })
-      .addCase(registerUser.rejected, (state, { payload }) => {
+      .addCase(registerAction.rejected, (state, { payload }) => {
         let serverError = payload?.response?.status.toString().split('')[0]
         state.isLoading = false
         state.isError = true

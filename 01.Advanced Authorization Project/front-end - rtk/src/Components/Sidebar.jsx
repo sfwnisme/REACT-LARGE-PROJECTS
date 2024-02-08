@@ -9,11 +9,12 @@ import Cookie from 'cookie-universal'
 import { useSelector } from 'react-redux';
 import { loginUserSelector } from '../rtk/api/loginSlice';
 import { registerUserSelector } from '../rtk/api/registerSlice';
+import { currentUserSelector } from '../rtk/features/users/usersSlice';
 
 const Sidebar = () => {
     //:::
-    const [user, setUser] = useState({})
-    console.log(user)
+    // const [user, setUser] = useState({})
+    // console.log(user)
     //:::
 
     //:::
@@ -23,20 +24,25 @@ const Sidebar = () => {
     //:::
 
     //:::
-    const { isSuccess: isSuccessLogin } = useSelector(loginUserSelector)
-    const { isSuccess: isSuccessRegister } = useSelector(registerUserSelector)
-    console.log(isSuccessLogin)
+    // const { isSuccess: isSuccessLogin } = useSelector(loginUserSelector)
+    // const { isSuccess: isSuccessRegister } = useSelector(registerUserSelector)
+    // console.log(isSuccessLogin)
     //:::
 
     //:::
-    useEffect(() => {
-        AXIOS.get(`/${USER}`).then((data) => {
-            setUser(data.data)
-            console.log(':::get user from sidebar done:::', data)
-        }).catch((error) => {
-            console.log('+++get user from sidebar error+++', error)
-        })
-    }, [])
+    const { data: user } = useSelector(currentUserSelector)
+    console.log(user)
+    //:::
+
+    //:::
+    // useEffect(() => {
+    //     AXIOS.get(`/${USER}`).then((data) => {
+    //         setUser(data.data)
+    //         console.log(':::get user from sidebar done:::', data)
+    //     }).catch((error) => {
+    //         console.log('+++get user from sidebar error+++', error)
+    //     })
+    // }, [])
     //:::
 
     //::: sidebar links

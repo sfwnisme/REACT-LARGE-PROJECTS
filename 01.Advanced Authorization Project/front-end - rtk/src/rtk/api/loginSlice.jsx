@@ -12,7 +12,7 @@ const initialState = {
 }
 const cookie = Cookie()
 //::: login action
-export const loginUser = createAsyncThunk('login/loginUser', async (initialData, thunkAPI) => {
+export const loginAction = createAsyncThunk('login/loginAction', async (initialData, thunkAPI) => {
   const { rejectWithValue } = thunkAPI
   try {
     const res = await axios.post(`${BASE_URL}/${LOGIN}`, initialData)
@@ -31,21 +31,21 @@ const loginSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state) => {
+      .addCase(loginAction.pending, (state) => {
         state.isLoading = true
         state.isError = false
         state.error = null
         state.isSuccess = false
         state.success = null
       })
-      .addCase(loginUser.fulfilled, (state, { payload }) => {
+      .addCase(loginAction.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isError = false
         state.error = null
         state.isSuccess = true
         state.success = state.isSuccess ? 'you have loged successfully' : null
       })
-      .addCase(loginUser.rejected, (state, { payload }) => {
+      .addCase(loginAction.rejected, (state, { payload }) => {
         let serverError = payload?.response?.status.toString().split('')[0]
         console.log(serverError)
         state.isLoading = false

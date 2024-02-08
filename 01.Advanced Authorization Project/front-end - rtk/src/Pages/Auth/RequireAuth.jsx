@@ -6,10 +6,14 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 import { BASE_URL, USER } from '../../Api/API'
 import PageLoading from '../../Loading/PageLoading/PageLoading'
 import Err403 from '../Dashboard/Err403'
+import { useSelector } from 'react-redux'
+import { currentUserSelector } from '../../rtk/features/users/usersSlice'
 
 const RequireAuth = (props) => {
     //:::
-    const [user, setUser] = useState('')
+    // const [user, setUser] = useState('')
+    const { data: user } = useSelector(currentUserSelector)
+    console.log(user)
     //:::
 
     //:::
@@ -22,22 +26,22 @@ const RequireAuth = (props) => {
     //:::
 
     //:::
-    useEffect(() => {
-        axios.get(`${BASE_URL}/${USER}`, {
-            headers: {
-                Authorization: 'Bearer ' + token
-            }
-        }).then(({ data }) => {
-            setUser(data)
-            console.log(':::get user from require auth done:::', data)
-        }).catch((error) => {
-            console.log('+++get users from require auth error+++', error)
-            setUser('')
-            cookie.remove('e-commerce')
-            navigate('/login')
-            location.reload()
-        })
-    }, [])
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}/${USER}`, {
+    //         headers: {
+    //             Authorization: 'Bearer ' + token
+    //         }
+    //     }).then(({ data }) => {
+    //         setUser(data)
+    //         console.log(':::get user from require auth done:::', data)
+    //     }).catch((error) => {
+    //         console.log('+++get users from require auth error+++', error)
+    //         setUser('')
+    //         cookie.remove('e-commerce')
+    //         navigate('/login')
+    //         location.reload()
+    //     })
+    // }, [])
     //:::
 
     //::: another way to render the output
@@ -53,9 +57,9 @@ const RequireAuth = (props) => {
     // return <Navigate to={'/login'} replace={true} />
 
     return token ? (
-        user === '' ? (
+        !user ? (
             <PageLoading />
-        ) : props?.allowedRole?.includes(user.role) ? (
+        ) : props?.allowedRole?.includes(user?.role) ? (
             <Outlet />
         ) : (
             <Err403 role={user?.role} />

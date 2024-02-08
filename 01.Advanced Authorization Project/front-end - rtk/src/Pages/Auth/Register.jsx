@@ -6,7 +6,7 @@ import PageLoading from '../../Loading/PageLoading/PageLoading';
 import { NavLink } from 'react-router-dom';
 import GoogleBtn from '../../Components/GoogleBtn';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, registerUserSelector } from '../../rtk/api/registerSlice';
+import { registerAction, registerUserSelector } from '../../rtk/api/registerSlice';
 
 const Register = () => {
   //:::States
@@ -38,7 +38,7 @@ const Register = () => {
   const Submit = async (e) => {
     e.preventDefault()
     try {
-      const res = await dispatch(registerUser(form)).unwrap()
+      const res = await dispatch(registerAction(form)).unwrap()
       console.log(':::register done:::', res)
       location.pathname = '/'
     } catch (error) {
