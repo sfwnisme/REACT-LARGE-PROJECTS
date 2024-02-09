@@ -1,6 +1,6 @@
 import Cookie from 'cookie-universal'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutAction, logoutSelector } from '../../rtk/api/logoutSlice'
+import { logoutUser, logoutSelector } from '../../rtk/api/logoutSlice'
 
 const Logout = () => {
   //:::
@@ -8,15 +8,13 @@ const Logout = () => {
   //:::
 
   //:::
-  const { isLoading, isError, error, isSuccess, success } = useSelector(logoutSelector)
-  console.log(isLoading)
+  const { isLoading, isSuccess, isError, success, error } = useSelector(logoutSelector)
   const dispatch = useDispatch()
   const handleLogout = async () => {
     try {
-      const res = await dispatch(logoutAction()).unwrap()
+      const res = await dispatch(logoutUser()).unwrap()
       cookie.remove('e-commerce')
       location.pathname = '/'
-      console.log(':::logout done:::', res)
     } catch (error) {
       console.log('+++logout error+++', error)
     }

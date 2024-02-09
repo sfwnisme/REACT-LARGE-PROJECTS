@@ -8,24 +8,27 @@ const cookie = Cookie()
 //:::
 const initialState = {
   isLoading: false,
+  isSuccess: false,
   isError: false,
   error: null,
-  isSuccess: false,
   success: null,
 }
 //:::
 
 //::: register function
-export const registerAction = createAsyncThunk('register/registerAction', async (initialData, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI
+export const registerUser = createAsyncThunk('register/registerUser', async (initialData, thunkAPI) => {
+  const { fulfillWithValue, rejectWithValue } = thunkAPI
   try {
     const res = await axios.post(`${BASE_URL}/${REGISTER}`, initialData)
-    console.log(':::register user from rtk:::', res)
     cookie.set('e-commerce', res?.data?.token)
-    return res?.data
+    const customRes = { user:res?.data?.user, message: 'The user has successfully registered', status: res?.status }
+    return fulfillWithValue(customRes)
   } catch (error) {
-    console.log('from rtk error', error.response)
-    return rejectWithValue(error)
+    const serverError = error?.response?.status.toString().split('')[0] === '5'
+    const clientError = error?.response?.data?.message
+    const errorMessage = serverError ? 'server error' : clientError
+    const customError = { message: errorMessage, status: error?.response?.status }
+    return rejectWithValue(customError)
   }
 })
 //:::
@@ -36,33 +39,26 @@ const registerSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerAction.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
         state.isLoading = true
-        state.isError = false
-        state.error = null
         state.isSuccess = false
-        state.success = null
-      })
-      .addCase(registerAction.fulfilled, (state, { payload }) => {
-        state.isLoading = false
         state.isError = false
+        state.success = null
         state.error = null
+      })
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false
         state.isSuccess = true
-        state.success = 'You have created user account successfully'
-        console.log('success', payload)
+        state.isError = false
+        state.success = payload
+        state.error = null
       })
-      .addCase(registerAction.rejected, (state, { payload }) => {
-        let serverError = payload?.response?.status.toString().split('')[0]
+      .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false
-        state.isError = true
-        state.error = state.isError
-          ? serverError === '5'
-            ? 'server error'
-            : payload?.response?.data?.message
-          : null
         state.isSuccess = false
+        state.isError = true
         state.success = null
-        console.log('===================', payload)
+        state.error = payload
       })
   }
 })

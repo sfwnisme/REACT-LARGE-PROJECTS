@@ -4,46 +4,58 @@ import { CAT } from '../../Api/API'
 import { useNavigate } from 'react-router-dom'
 import usePathname from '../../Hooks/use-pathname'
 import useSingleCategory from '../../Hooks/use-single-category'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSingleCategory, singleCategorySelector, updateCategory, updateCategorySelector } from '../../rtk/features/categories/categoriesSlice'
+import AlertMsg from '../../Components/AlertMsg'
 
 const Category = () => {
   //:::
+  const [title, setTitle] = useState('')
+  const [image, setImage] = useState('')
+  const [isMsg, setIsMsg] = useState(false)
   const { id } = usePathname()
   const navigate = useNavigate()
+  const focusRef = useRef(null)
   //:::
 
-  //::: get category using custom hook make code cleaner
-  const {
-    title,
-    setTitle,
-    image,
-    setImage,
-    disable,
-    setDisable,
-    focusRef
-  } = useSingleCategory()
+  //::: tab title
+  useEffect(() => {
+    document.title = 'Update category'
+  }, [])
   //:::
 
+  //:::
+  const { data, isLoading, isSuccess, isError, isEmpty, success, error } = useSelector(singleCategorySelector)
+  const { isLoading: isLoadingUpdate, isSuccess: isSuccessUpdate, isError: isErrorUpdate, isEmpty: isEmptyUpdate, success: successUpdate, error: errorUpdate } = useSelector(updateCategorySelector)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    setTitle(data.title)
+    setImage(data.image)
+  }, [id, data])
+  useEffect(() => {
+    dispatch(getSingleCategory())
+  }, [dispatch])
+  //:::
 
   //:::
   const Submit = async (e) => {
     e.preventDefault()
-    setDisable(true)
-    let formData = new FormData()
-    formData.append('title', title)
-    formData.append('image', image)
     try {
-      const res = await AXIOS.post(`${CAT}/edit/${id}`, formData)
-      setDisable(false)
-      navigate('/dashboard/categories')
-      console.log(':::edit category done:::', res)
+      let formData = new FormData()
+      formData.append('title', title)
+      formData.append('image', image)
+      formData.append('id', id)
+      const initialData = formData
+      await dispatch(updateCategory(initialData)).unwrap()
+      setIsMsg(true)
     } catch (error) {
-      setDisable(false)
-      console.log('+++edit category error+++', error)
-    } finally {
-      setDisable(false)
+      setIsMsg(true)
+      console.log(error)
     }
   }
   //:::
+
   return (
     <div>
       <div className='form-container form-noimage'>
@@ -60,10 +72,11 @@ const Category = () => {
               <Form.Label>image</Form.Label>
               <Form.Control type="file" onChange={(e) => setImage(e.target.files[0])} />
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={disable}>
-              {disable ? 'Updating...' : 'Update'}
+            <Button variant="primary" type="submit" disabled={isLoadingUpdate}>
+              {isLoadingUpdate ? 'Updating...' : 'Update'}
             </Button>
           </Form>
+          <AlertMsg message={successUpdate?.message || errorUpdate?.message} isErrorUpdate={isErrorUpdate} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
         </div>
       </div>
     </div>

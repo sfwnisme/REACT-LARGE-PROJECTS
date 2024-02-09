@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import { NavLink } from "react-router-dom";
-import { Alert, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import getUserType from "../utils/getUserType.jsx";
@@ -31,7 +31,6 @@ const TableShow = (props) => {
 
     //::: handle delete function
     const { isLoading: isLoadingDelete, isSuccess: isSuccessDelete, isError: isErrorDelete, success: successDelete, error: errorDelete } = useSelector(DELETESELECTOR)
-    console.log(successDelete)
     const dispatch = useDispatch()
     const handleDelete = async (id) => {
         setDeletedID(id)
@@ -40,10 +39,8 @@ const TableShow = (props) => {
             setDeletedID(null)
             setTableDate((prev) => prev.filter((pre) => pre.id !== id))
             setIsMsg(true)
-            console.log(`%c:::data with id ${id} deleted:::`, 'color: red', res)
         } catch (error) {
             setIsMsg(true)
-            console.log(`+++data with id ${id} could not be deleted+++`, error)
         } finally {
             setDeletedID(null)
         }
@@ -127,8 +124,14 @@ const TableShow = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-
                     {
+                        isLoadingData
+                            ? dataLoading
+                            : isEmptyData
+                                ? dataNotFound
+                                : dataShow
+                    }
+                    {/* {
                         isLoadingData && dataLoading
                     }
                     {
@@ -136,7 +139,7 @@ const TableShow = (props) => {
                     }
                     {
                         !isLoadingData && dataShow
-                    }
+                    } */}
                 </tbody>
             </Table>
             <AlertMsg

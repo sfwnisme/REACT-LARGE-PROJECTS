@@ -1,7 +1,14 @@
+import { useEffect } from "react";
 import TableShow from "../../Components/TableShow.jsx";
 import { categoriesSelector, deleteCategory, deleteCategorySelector, getCategories } from "../../rtk/features/categories/categoriesSlice.jsx";
 
 const Categories = () => {
+    //::: tab title
+    useEffect(() => {
+        document.title = 'Categories'
+    }, [])
+    //:::
+
     //:::
     let header = [
         {

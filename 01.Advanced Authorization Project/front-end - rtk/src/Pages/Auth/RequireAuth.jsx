@@ -13,48 +13,12 @@ const RequireAuth = (props) => {
     //:::
     // const [user, setUser] = useState('')
     const { data: user } = useSelector(currentUserSelector)
-    console.log(user)
-    //:::
-
-    //:::
-    const navigate = useNavigate()
     //:::
 
     //:::
     const cookie = Cookie()
     const token = cookie.get('e-commerce')
     //:::
-
-    //:::
-    // useEffect(() => {
-    //     axios.get(`${BASE_URL}/${USER}`, {
-    //         headers: {
-    //             Authorization: 'Bearer ' + token
-    //         }
-    //     }).then(({ data }) => {
-    //         setUser(data)
-    //         console.log(':::get user from require auth done:::', data)
-    //     }).catch((error) => {
-    //         console.log('+++get users from require auth error+++', error)
-    //         setUser('')
-    //         cookie.remove('e-commerce')
-    //         navigate('/login')
-    //         location.reload()
-    //     })
-    // }, [])
-    //:::
-
-    //::: another way to render the output
-    // if (token)
-    //   if (user === '')
-    //     return <PageLoading />
-    //   else
-    //     if (props?.allowedRole.includes(user?.role))
-    //       return <Outlet />
-    //     else
-    //       <Err403 />
-
-    // return <Navigate to={'/login'} replace={true} />
 
     return token ? (
         !user ? (

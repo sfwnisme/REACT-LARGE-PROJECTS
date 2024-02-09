@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
 import { AXIOS } from '../../Api/AXIOS.JSX'
 import { USER } from '../../Api/API'
+import { addUser, addUserSelector } from '../../rtk/features/users/usersSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import AlertMsg from '../../Components/AlertMsg'
 
 const AddUser = () => {
     //:::
@@ -11,8 +14,7 @@ const AddUser = () => {
         password: '',
         role: ''
     })
-    const [displayErr, setDisplayErr] = useState(false)
-    const [errMsg, setErrMsg] = useState('')
+    const [isMsg, setIsMsg] = useState(false)
     //:::
 
     //:::
@@ -23,16 +25,17 @@ const AddUser = () => {
     //:::
 
     //:::
+    const { isLoading, isError, success, error } = useSelector(addUserSelector)
+    const dispatch = useDispatch()
     const Submit = async (e) => {
         e.preventDefault()
+        const initialData = form
         try {
-            const res = await AXIOS.post(`/${USER}/add`, form)
-            setDisplayErr(false)
+            const res = await dispatch(addUser(initialData)).unwrap()
             window.location.pathname = '/dashboard/users'
-            console.log(':::add user done:::', res)
+            setIsMsg(true)
         } catch (error) {
-            setDisplayErr(true)
-            setErrMsg(error.response.data.message)
+            setIsMsg(true)
             console.log('+++add user error+++', error)
         }
     }
@@ -77,18 +80,17 @@ const AddUser = () => {
                                 <option value="1996">writer</option>
                             </Form.Select>
                         </Form.Group>
-                        <Button variant="primary" size="sm" type="submit">
-                            Add
+                        <Button variant="primary" size="sm" type="submit" disabled={isLoading}>
+                            {
+                                isLoading
+                                    ? 'Adding...'
+                                    : 'Add'
+                            }
                         </Button>
-                        {
-                            displayErr &&
-                            <Alert variant='danger' className='credentials-error'>
-                                {errMsg}
-                            </Alert>
-                        }
                     </Form>
                 </div>
             </div>
+            <AlertMsg message={success?.message || error?.message} isError={isError} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
         </div>
     )
 }

@@ -36,7 +36,7 @@ const Header = () => {
               token &&
               <DropdownButton
                 size='sm'
-                title={`${getUserType(currentUser?.role)} - ${currentUser && currentUser?.name || isLoading && "Loading..." || isEmpty && 'undefined' || isError && 'there is an error'}`}
+                title={`${getUserType(currentUser?.role) || 'loading...'} - ${currentUser && currentUser?.name || isLoading && "Loading..." || isEmpty && 'undefined' || isError && 'there is an error'}`}
               >
                 <Dropdown.Item size='sm'>
                   <Logout />

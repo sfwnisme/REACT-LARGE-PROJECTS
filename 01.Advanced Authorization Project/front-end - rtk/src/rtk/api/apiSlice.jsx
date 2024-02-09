@@ -17,8 +17,6 @@ export const apiSlice = createApi({
       }
     },
   }),
-
-  endpoints: builder => ({}),
 })
 
 //comment

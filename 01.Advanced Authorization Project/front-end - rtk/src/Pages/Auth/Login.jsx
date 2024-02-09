@@ -6,7 +6,8 @@ import PageLoading from "../../Loading/PageLoading/PageLoading"
 import { NavLink } from "react-router-dom"
 import GoogleBtn from "../../Components/GoogleBtn"
 import { useDispatch, useSelector } from "react-redux"
-import { loginAction, loginUserSelector } from "../../rtk/api/loginSlice"
+import { loginUser, loginUserSelector } from "../../rtk/api/loginSlice"
+import AlertMsg from "../../Components/AlertMsg"
 
 const Login = () => {
 
@@ -15,6 +16,7 @@ const Login = () => {
     email: '',
     password: '',
   })
+  const [isMsg, setIsMsg] = useState(false)
   //:::
 
   //:::
@@ -30,8 +32,7 @@ const Login = () => {
   //:::
 
   //:::
-  const { isLoading, isError, error, isSuccess, success } = useSelector(loginUserSelector)
-  console.log(isError)
+  const { isLoading, isSuccess, isError, success, error } = useSelector(loginUserSelector)
   //:::
 
   //:::
@@ -39,9 +40,10 @@ const Login = () => {
   const Submit = async (e) => {
     e.preventDefault()
     try {
-      const res = await dispatch(loginAction(form)).unwrap()
+      const res = await dispatch(loginUser(form)).unwrap()
+      setIsMsg(true)
       const role = res?.user?.role
-      const go = role === '1995' ? 'dashboard/users' : role === '1996' ? 'dashboard/writer' : '/'
+      const go = role === '1995' ? '/dashboard/users' : role === '1996' ? '/dashboard/writer' : '/'
       switch (role) {
         case '1995':
           'dashboard/users';
@@ -57,9 +59,8 @@ const Login = () => {
           break;
       }
       location.pathname = go
-      console.log(':::login done:::', res)
     } catch (error) {
-      console.log('+++login error+++', error)
+      setIsMsg(true)
     }
   }
   //:::
@@ -91,13 +92,8 @@ const Login = () => {
             </NavLink>
           </Form>
           <GoogleBtn />
-          {
-            isError || isSuccess ?
-              <Alert variant={isError ? 'danger' : 'success'} className={`credentials-${isError ? 'error' : 'success'}`}>
-                {error || success}
-              </Alert>
-              : null
-          }
+
+          <AlertMsg message={success?.message || error?.message} isError={isError} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
         </div>
         <div className="credential-image-container">
           <img src={srcImage} alt="" />

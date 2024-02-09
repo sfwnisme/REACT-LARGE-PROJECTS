@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { AXIOS } from '../../Api/AXIOS.JSX'
-import {  PRO } from '../../Api/API'
+import { PRO } from '../../Api/API'
 import { Alert, Button, Form } from 'react-bootstrap'
 import useGetData from '../../Hooks/use-get-data'
 import { categoriesSelector, getCategories } from '../../rtk/features/categories/categoriesSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { addProduct, addProductSelector } from '../../rtk/features/products/productsSlice'
+import AlertMsg from '../../Components/AlertMsg'
 
 //['category', 'title', 'description', 'About', 'price', 'discount'];
 const AddProduct = () => {
@@ -17,6 +20,7 @@ const AddProduct = () => {
     About: '',
   })
   const [images, setImages] = useState([])
+  const [isMsg, setIsMsg] = useState(false)
   //:::
 
   //:::
@@ -28,11 +32,13 @@ const AddProduct = () => {
   //:::
 
   //:::
+  const { isLoading, isError, success, error } = useSelector(addProductSelector)
+  const dispatch = useDispatch()
+
   const Submit = async (e) => {
     e.preventDefault()
 
     const formData = new FormData()
-
     // loop the form state to append it to the formData dynamically
     let formObjectToArray = Object.entries(form)
     for (const [key, value] of formObjectToArray) {
@@ -45,11 +51,13 @@ const AddProduct = () => {
     for (let i = 0; i < images.length; i++) {
       formData.append('images[]', images[i])
     }
+    const initialData = formData
 
     try {
-      const res = await AXIOS.post(`/${PRO}/add`, formData)
-      console.log(':::add product done:::', res)
+      const res = await dispatch(addProduct(initialData)).unwrap()
+      setIsMsg(true)
     } catch (error) {
+      setIsMsg(true)
       console.log('+++add product error+++', error)
     }
   }
@@ -134,14 +142,14 @@ const AddProduct = () => {
 
 
             <div className='d-flex flex-column gap-4'>{showImages}</div>
-            <Button variant="primary" size="sm" type="submit">
-              Add
+            <Button variant="primary" size="sm" type="submit" disabled={isLoading}>
+              {
+                isLoading
+                  ? 'Adding...'
+                  : 'Add'
+              }
             </Button>
-            {
-              <Alert variant='danger' className='credentials-error'>
-                error message
-              </Alert>
-            }
+            <AlertMsg message={success?.message || error?.message} isError={isError} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
           </Form>
         </div>
       </div>

@@ -1,40 +1,41 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { Form } from 'react-bootstrap'
-import { AXIOS } from '../../Api/AXIOS.JSX'
-import { CAT } from '../../Api/API'
+import { addCategory, addCategorySelector } from '../../rtk/features/categories/categoriesSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import AlertMsg from '../../Components/AlertMsg'
 
 const AddCategory = () => {
   //:::
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
-  const [disable, setDisable] = useState(true)
+  const [isMsg, setIsMsg] = useState(false)
   const focusRef = useRef(null)
   //:::
 
-  //:::
+  //::: tab title
   useEffect(() => {
     focusRef?.current?.focus()
-    setDisable(false)
+    document.title = 'Add category'
   }, [])
   //:::
 
   //:::
+  const { isLoading, isError, success, error } = useSelector(addCategorySelector)
+  const dispatch = useDispatch()
   const Submit = async (e) => {
     e.preventDefault()
-    setDisable(true)
     try {
       const formData = new FormData()
       formData.append('title', title)
       formData.append('image', image)
-      const res = await AXIOS.post(`${CAT}/add`, formData)
-      setDisable(false)
-      console.log(':::add category done:::', res)
+      const initialData = formData
+      const res = await dispatch(addCategory(initialData)).unwrap()
+      setIsMsg(true)
+      location.pathname = '/dashboard/categories'
     } catch (error) {
-      setDisable(false)
+      setIsMsg(true)
       console.log('+++add category error+++', error)
-    } finally {
-      setDisable(false)
     }
   }
   //:::
@@ -54,11 +55,17 @@ const AddCategory = () => {
             <Form.Label>image</Form.Label>
             <Form.Control type="file" onChange={(e) => setImage(e.target.files[0])} />
           </Form.Group>
-          <Button variant="primary" type="submit" disabled={disable}>
-            {disable ? 'loading...' : 'Submit'}
+          <Button variant="primary" type="submit" disabled={isLoading}>
+            {isLoading ? 'Adding...' : 'Add'}
           </Button>
         </Form>
       </div>
+      <AlertMsg
+        message={success?.message || error?.message}
+        isError={isError}
+        isMsg={isMsg}
+        setIsMsg={setIsMsg}
+      />
     </div>
   )
 }

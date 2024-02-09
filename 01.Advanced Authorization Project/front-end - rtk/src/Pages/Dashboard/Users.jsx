@@ -7,7 +7,6 @@ const Users = () => {
     //:::usnig this hook instead of fetching data inside the component
     // const { currentUser } = useSignedUser()
     const { data: currentUser } = useSelector(currentUserSelector)
-    console.log(currentUser)
     //:::
 
     //:::

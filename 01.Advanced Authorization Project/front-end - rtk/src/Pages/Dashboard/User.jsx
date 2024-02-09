@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import usePathname from '../../Hooks/use-pathname'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSigleUser, signleUserSelector, updateUser, updateUserSelector } from '../../rtk/features/users/usersSlice'
+import { getSigleUser, singleUserSelector, updateUser, updateUserSelector } from '../../rtk/features/users/usersSlice'
 import AlertMsg from '../../Components/AlertMsg'
 
 const User = () => {
@@ -12,7 +12,7 @@ const User = () => {
     const [email, setEmail] = useState('')
     const [role, setRole] = useState('')
     const focusRef = useRef(null)
-    // const { id } = usePathname()
+    const { id } = usePathname()
     //:::
 
     //::: focus on the name input after render
@@ -23,8 +23,7 @@ const User = () => {
 
     //:::
     const dispatch = useDispatch()
-    const { data: singleUser } = useSelector(signleUserSelector)
-    console.log(singleUser)
+    const { data: singleUser } = useSelector(singleUserSelector)
 
     useEffect(() => {
         dispatch(getSigleUser())
@@ -39,14 +38,12 @@ const User = () => {
 
     //:::
     const { isLoading, isSuccess, isError, success, error } = useSelector(updateUserSelector)
-    console.log(isLoading)
     const Submit = async (e) => {
         e.preventDefault()
-        const initialData = { name, email, role }
+        const initialData = { id, name, email, role }
         try {
             const res = await dispatch(updateUser(initialData)).unwrap()
             window.location.pathname = '/dashboard/users'
-            console.log(':::edit user done:::', res)
         } catch (error) {
             console.log('+++update user erro+++', error)
         }

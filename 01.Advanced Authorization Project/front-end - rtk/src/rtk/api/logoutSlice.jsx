@@ -13,14 +13,18 @@ const initialState = {
 //:::
 
 //::: logout actoin
-export const logoutAction = createAsyncThunk('logout/logoutAction', async (_, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI
+export const logoutUser = createAsyncThunk('logout/logoutUser', async (_, thunkAPI) => {
+  const { fulfillWithValue, rejectWithValue } = thunkAPI
   try {
     const res = await AXIOS.get(`/${LOGOUT}`)
-    console.log(':::logout from rtk done:::', res)
-    return null
+    const customRes = { message: 'The user has been successfully logged out', status: res?.status }
+    return fulfillWithValue(customRes)
   } catch (error) {
-    return rejectWithValue(error)
+    const serverError = error?.response?.status.toString().split('')[0] === '5'
+    const clientError = error?.response?.data?.message
+    const errorMessage = serverError ? 'server error' : clientError
+    const customError = { message: errorMessage, status: error?.response?.status }
+    return rejectWithValue(customError)
   }
 })
 
@@ -31,27 +35,26 @@ const logoutSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(logoutAction.pending, (state) => {
+      .addCase(logoutUser.pending, (state) => {
         state.isLoading = true
-        state.isError = false
-        state.error = null
         state.isSuccess = false
-        state.success = null
-      })
-      .addCase(logoutAction.fulfilled, (state, { payload }) => {
-        state.isLoading = false
         state.isError = false
+        state.success = null
         state.error = null
+      })
+      .addCase(logoutUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false
         state.isSuccess = true
-        state.success = payload // null
+        state.isError = false
+        state.success = payload
+        state.error = null
       })
-      .addCase(logoutAction.rejected, (state, { payload }) => {
+      .addCase(logoutUser.rejected, (state, { payload }) => {
         state.isLoading = false
-        state.isError = true
-        state.error = payload
         state.isSuccess = false
+        state.isError = true
         state.success = null
-        console.log('payload', payload)
+        state.error = payload
       })
   }
 })

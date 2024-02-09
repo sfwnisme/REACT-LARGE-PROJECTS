@@ -7,17 +7,26 @@ const initialState = {
   data: [],
   isLoading: false,
   isSuccess: false,
-  isEmpty: false,
   isError: false,
+  isEmpty: false,
   success: null,
   error: null,
-  delete: {
+  deleteData: {
     isLoading: false,
     isSuccess: false,
     isError: false,
     success: null,
     error: null,
-  }
+  },
+  addData: {
+    data: {},
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    isEmpty: false,
+    success: null,
+    error: null,
+  },
 }
 //:::
 
@@ -26,7 +35,8 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
   const { fulfillWithValue, rejectWithValue } = thunkAPI
   try {
     const res = await AXIOS.get(`/${PROS}`)
-    return fulfillWithValue(res.data)
+    const customRes = res?.data
+    return fulfillWithValue(customRes)
   } catch (error) {
     const customError = error?.response?.data
     return rejectWithValue(customError)
@@ -36,14 +46,32 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
 
 //::: delete product
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (id, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI
+  const { fulfillWithValue, rejectWithValue } = thunkAPI
 
   try {
     await AXIOS.delete(`/${PRO}/${id}`)
-    return { id: id, message: 'The product has been successfully deleted' }
+    const customRes = { id: id, message: 'The product has been successfully deleted' }
+    return fulfillWithValue(customRes)
   } catch (error) {
     let custormError = { message: error.response.data.message, status: error.response.status }
     return rejectWithValue(custormError)
+  }
+})
+//:::
+
+//::: add product
+export const addProduct = createAsyncThunk('categories/addProduct', async (initialData, thunkAPI) => {
+  const { fulfillWithValue, rejectWithValue } = thunkAPI
+  try {
+    const res = await AXIOS.post(`/${PRO}/add`, initialData)
+    const customRes = { message: 'The product has been successfully added', status: res?.status }
+    return fulfillWithValue(customRes)
+  } catch (error) {
+    const customError = {
+      message: error?.response?.data?.message,
+      status: error?.response?.status
+    }
+    return rejectWithValue(customError)
   }
 })
 //:::
@@ -61,16 +89,16 @@ const productsSlice = createSlice({
       .addCase(getProducts.pending, (state) => {
         state.isLoading = true
         state.isSuccess = false
-        state.isEmpty = false
         state.isError = false
+        state.isEmpty = false
         state.success = null
         state.error = null
       })
       .addCase(getProducts.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isSuccess = true
-        state.isEmpty = payload?.length === 0 ? true : false
         state.isError = false
+        state.isEmpty = payload?.length === 0 ? true : false
         state.success = { message: 'The products has been successfully called' }
         state.error = null
         state.data = payload
@@ -84,27 +112,53 @@ const productsSlice = createSlice({
       })
       //::: delete product
       .addCase(deleteProduct.pending, (state) => {
-        state.delete.isLoading = true
-        state.delete.isSuccess = false
-        state.delete.isError = false
-        state.delete.error = null
-        state.delete.success = null
+        state.deleteData.isLoading = true
+        state.deleteData.isSuccess = false
+        state.deleteData.isError = false
+        state.deleteData.error = null
+        state.deleteData.success = null
       })
       .addCase(deleteProduct.fulfilled, (state, { payload }) => {
-        state.delete.isLoading = false
-        state.delete.isSuccess = true
-        state.delete.isError = false
-        state.delete.success = payload
-        state.delete.error = null
-        console.log(payload)
+        state.deleteData.isLoading = false
+        state.deleteData.isSuccess = true
+        state.deleteData.isError = false
+        state.deleteData.success = payload
+        state.deleteData.error = null
       })
       .addCase(deleteProduct.rejected, (state, { payload }) => {
-        state.delete.isLoading = false
-        state.delete.isSuccess = false
-        state.delete.isError = true
-        state.delete.success = null
-        state.delete.error = payload
-        console.log(payload)
+        state.deleteData.isLoading = false
+        state.deleteData.isSuccess = false
+        state.deleteData.isError = true
+        state.deleteData.success = null
+        state.deleteData.error = payload
+      })
+      //::: add product
+      .addCase(addProduct.pending, (state) => {
+        state.addData.data = {}
+        state.addData.isLoading = true
+        state.addData.isSuccess = false
+        state.addData.isError = false
+        state.addData.isEmpty = false
+        state.addData.success = null
+        state.addData.error = null
+      })
+      .addCase(addProduct.fulfilled, (state, { payload }) => {
+        state.addData.data = payload
+        state.addData.isLoading = false
+        state.addData.isSuccess = true
+        state.addData.isError = false
+        state.addData.isEmpty = payload ? false : true
+        state.addData.success = payload
+        state.addData.error = null
+      })
+      .addCase(addProduct.rejected, (state, { payload }) => {
+        state.addData.data = {}
+        state.addData.isLoading = false
+        state.addData.isSuccess = false
+        state.addData.isError = true
+        state.addData.isEmpty = false
+        state.addData.success = null
+        state.addData.error = payload
       })
   }
 })
@@ -112,5 +166,6 @@ const productsSlice = createSlice({
 
 export default productsSlice.reducer
 export const productsSelector = (state) => state.products
-export const deleteProductSelector = (state) => state.products.delete
+export const deleteProductSelector = (state) => state.products.deleteData
+export const addProductSelector = (state) => state.products.addData
 

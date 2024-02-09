@@ -12,15 +12,19 @@ const initialState = {
 }
 const cookie = Cookie()
 //::: login action
-export const loginAction = createAsyncThunk('login/loginAction', async (initialData, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI
+export const loginUser = createAsyncThunk('login/loginUser', async (initialData, thunkAPI) => {
+  const { fulfillWithValue, rejectWithValue } = thunkAPI
   try {
     const res = await axios.post(`${BASE_URL}/${LOGIN}`, initialData)
-    console.log(':::login from rtk:::', res)
     cookie.set('e-commerce', res?.data?.token)
-    return res.data
+    const customRes = { user: res?.data?.user, message: 'The user has been successfully signed', status: res?.status }
+    return fulfillWithValue(customRes)
   } catch (error) {
-    return rejectWithValue(error)
+    const serverError = error?.response?.status.toString().split('')[0] === '5'
+    const clientError = error?.response?.data?.error
+    const errorMessage = serverError ? 'server error' : clientError
+    const customError = { message: errorMessage, status: error?.response?.status }
+    return rejectWithValue(customError)
   }
 })
 
@@ -31,33 +35,26 @@ const loginSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginAction.pending, (state) => {
+      .addCase(loginUser.pending, (state) => {
         state.isLoading = true
-        state.isError = false
-        state.error = null
         state.isSuccess = false
-        state.success = null
-      })
-      .addCase(loginAction.fulfilled, (state, { payload }) => {
-        state.isLoading = false
         state.isError = false
+        state.success = null
         state.error = null
+      })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false
         state.isSuccess = true
-        state.success = state.isSuccess ? 'you have loged successfully' : null
+        state.isError = false
+        state.success = payload
+        state.error = null
       })
-      .addCase(loginAction.rejected, (state, { payload }) => {
-        let serverError = payload?.response?.status.toString().split('')[0]
-        console.log(serverError)
+      .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false
-        state.isError = true
-        state.error = state.isError
-          ? serverError === '5'
-            ? 'server error'
-            : payload?.response?.data?.error || payload?.response?.data?.message
-          : null
         state.isSuccess = false
+        state.isError = true
         state.success = null
-        console.log('===================', payload)
+        state.error = payload
       })
   }
 })

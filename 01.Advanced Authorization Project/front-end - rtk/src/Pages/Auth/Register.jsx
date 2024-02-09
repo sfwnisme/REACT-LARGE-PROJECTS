@@ -6,7 +6,8 @@ import PageLoading from '../../Loading/PageLoading/PageLoading';
 import { NavLink } from 'react-router-dom';
 import GoogleBtn from '../../Components/GoogleBtn';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerAction, registerUserSelector } from '../../rtk/api/registerSlice';
+import { registerUser, registerUserSelector } from '../../rtk/api/registerSlice';
+import AlertMsg from '../../Components/AlertMsg';
 
 const Register = () => {
   //:::States
@@ -15,6 +16,7 @@ const Register = () => {
     email: '',
     password: '',
   })
+  const [isMsg, setIsMsg] = useState(false)
   //:::
 
   //:::
@@ -30,7 +32,7 @@ const Register = () => {
   //:::
 
   //:::
-  const { isLoading, isError, error, isSuccess, success } = useSelector(registerUserSelector)
+  const { isLoading, isSuccess, isError, success, error } = useSelector(registerUserSelector)
   //:::
 
   //:::
@@ -38,11 +40,11 @@ const Register = () => {
   const Submit = async (e) => {
     e.preventDefault()
     try {
-      const res = await dispatch(registerAction(form)).unwrap()
-      console.log(':::register done:::', res)
+      const res = await dispatch(registerUser(form)).unwrap()
+      setIsMsg(true)
       location.pathname = '/'
     } catch (error) {
-      console.log('+++regiser error+++', error)
+      setIsMsg(true)
     }
   }
   //:::
@@ -78,15 +80,7 @@ const Register = () => {
             </NavLink>
           </Form>
           <GoogleBtn />
-          {
-            isError || isSuccess ?
-              <Alert variant={isError ? 'danger' : 'success'} className={`credentials-${isError ? 'error' : 'success'}`}>
-                {
-                  error || success
-                }
-              </Alert>
-              : null
-          }
+          <AlertMsg message={success?.message || error?.message} isError={isError} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
         </div>
         <div className="credential-image-container">
           <img src={srcImage} alt="" />
