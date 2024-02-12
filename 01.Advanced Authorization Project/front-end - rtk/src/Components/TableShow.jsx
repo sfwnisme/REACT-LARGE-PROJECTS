@@ -22,7 +22,11 @@ const TableShow = (props) => {
     //:::
 
     //::: 
-    const { data, isLoading: isLoadingData, isEmpty: isEmptyData, isError: isErrorData, success: successData, error: errorData } = useGetData(DISPATCHER, SELECTOR)
+    const {
+        data,
+        isLoading: isLoadingData,
+        isEmpty: isEmptyData,
+    } = useGetData(DISPATCHER, SELECTOR)
 
     useEffect(() => {
         setTableDate(data)
@@ -35,7 +39,7 @@ const TableShow = (props) => {
     const handleDelete = async (id) => {
         setDeletedID(id)
         try {
-            const res = await dispatch(DELETEACTION(id)).unwrap()
+            await dispatch(DELETEACTION(id)).unwrap()
             setDeletedID(null)
             setTableDate((prev) => prev.filter((pre) => pre.id !== id))
             setIsMsg(true)
@@ -50,7 +54,6 @@ const TableShow = (props) => {
     //::: table header
     const headerShow = header.map((head, index) => <th key={index}>{head?.name}</th>)
     //:::
-
 
     //::: table data
     const dataShow = tableData?.map((item, index) => (
@@ -125,13 +128,6 @@ const TableShow = (props) => {
                 </thead>
                 <tbody>
                     {
-                        isLoadingData
-                            ? dataLoading
-                            : isEmptyData
-                                ? dataNotFound
-                                : dataShow
-                    }
-                    {/* {
                         isLoadingData && dataLoading
                     }
                     {
@@ -139,7 +135,7 @@ const TableShow = (props) => {
                     }
                     {
                         !isLoadingData && dataShow
-                    } */}
+                    }
                 </tbody>
             </Table>
             <AlertMsg

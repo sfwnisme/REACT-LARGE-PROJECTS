@@ -1,0 +1,8 @@
+add images endpoint => /product-img/add =>
+edit product endpoint => /${PRO}/edit/${id} => edit dummy to submit
+add full product endpoint => /${PRO}/add => dummy
+
+[x]- disable all inputs before changing category selection
+[x]- handle posting dummy data
+[]- handle posting images 
+[]- handle uploading the second image group

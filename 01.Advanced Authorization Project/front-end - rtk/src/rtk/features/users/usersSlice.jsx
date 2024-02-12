@@ -53,6 +53,11 @@ const initialState = {
     success: null,
     error: null,
   },
+  DATA: {
+    data: [],
+    status: 'dle',// dle | loading | error | success
+    msg: 'dle', // dle | error | success
+  },
 }
 //:::
 
