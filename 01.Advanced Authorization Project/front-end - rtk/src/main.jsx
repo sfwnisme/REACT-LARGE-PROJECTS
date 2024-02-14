@@ -20,9 +20,11 @@ import Welcome from "./Pages/Dashboard/Welcome.jsx";
 import AddCategory from './Pages/Dashboard/AddCategory.jsx'
 import Category from './Pages/Dashboard/Category.jsx'
 import Products from './Pages/Dashboard/Products.jsx'
-import AddProduct from './Pages/Dashboard/AddProduct.jsx'
+import AddProductCopy from './Pages/Dashboard/AddProductCopy.jsx'
 import { Provider } from 'react-redux'
 import { store } from './rtk/api/store.jsx'
+import AddProduct from './Pages/Dashboard/AddProduct.jsx'
+import AddProductNew from './Pages/Dashboard/AddProductNew.jsx'
 
 //::: users codes
 const admin = '1995'
@@ -119,6 +121,8 @@ const router = createBrowserRouter([
                                     },
                                     {
                                         element: <AddProduct />,
+                                        // element: <AddProductCopy />,
+                                        // element: <AddProductNew />,
                                         path: 'product/add'
                                     }
                                 ]

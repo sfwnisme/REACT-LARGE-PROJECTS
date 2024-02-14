@@ -7,10 +7,11 @@ import { addProduct, addProductSelector } from '../../rtk/features/products/prod
 import AlertMsg from '../../Components/AlertMsg'
 import getFileSize from '../../utils/getFileSize'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
+import { faFileUpload, faTrash } from '@fortawesome/free-solid-svg-icons'
 import shortText from '../../utils/shortText'
 import { AXIOS } from '../../Api/AXIOS.JSX'
 import { PRO } from '../../Api/API'
+import ImagePreview from './ImagePreview'
 
 //['category', 'title', 'description', 'About', 'price', 'discount'];
 const AddProduct = () => {
@@ -35,8 +36,14 @@ const AddProduct = () => {
   const [isMsg, setIsMsg] = useState(false)
   const [dummySent, setDummySent] = useState(false)
   const [productId, setProductId] = useState('')
+  // freezeOnUploading: disable the uploading input while you uploading the images,
+  // and handle the UI of the uploading progrss
+  const [freezeOnUploading, setFreezeOnUploading] = useState(false)
+  const [imageToPreview, setImageToPreview] = useState('')
+  const [preview, setPreview] = useState(false)
   const fileRef = useRef(null)
   const progressRef = useRef([])
+  const idsRef = useRef([])
   // const progressRef = innerR([])
   //:::
   // console.log('process ref', progressRef.current)
@@ -63,11 +70,11 @@ const AddProduct = () => {
       formData.append(key, value)
     }
 
-    // images must write this way "images[]" with empty array
-    // for the backend to understand it
-    for (let i = 0; i < images.length; i++) {
-      formData.append('images[]', images[i])
-    }
+    // // images must write this way "images[]" with empty array
+    // // for the backend to understand it
+    // for (let i = 0; i < images.length; i++) {
+    //   formData.append('images[]', images[i])
+    // }
     console.log(...formData)
     const initialData = formData
 
@@ -104,17 +111,21 @@ const AddProduct = () => {
     !dummySent ? handleDummy() : null
   }
   //:::
+
   const lengthRef = useRef(0)
+
   //::: handle images posting
   const handleUploadImages = async (e) => {
     setImages((prev) => [...prev, ...e.target.files])
     let imagesList = e.target.files
-    console.log(imagesList)
+    console.log('images list ', imagesList)
+
     const formData = new FormData()
-    for (let i = 0; i <= imagesList.length; i++) {
+    for (let i = 0; i < imagesList.length; i++) {
       formData.append('image', imagesList[i])
       formData.append('product_id', productId)
       try {
+        setFreezeOnUploading(true)
         const res = await AXIOS.post(`/product-img/add`, formData, {
           onUploadProgress: (ProgressEvent) => {
             const { loaded, total } = ProgressEvent
@@ -127,6 +138,9 @@ const AddProduct = () => {
         })
         console.log('uploads of images>>>>>>>>>>>', res)
         lengthRef.current++
+        setFreezeOnUploading(false)
+        idsRef.current[lengthRef.current - 1] = res?.data?.id
+        console.log(idsRef.current)
       } catch (error) {
         console.log('images error', error)
       }
@@ -138,33 +152,73 @@ const AddProduct = () => {
   const { data: categories } = useGetData(getCategories, categoriesSelector)
   const showCategories = categories.map((cat) => <option value={cat.id} key={cat.id}>{cat.title}</option>)
   //:::
+
+
+  //:::
+  const handleImagePreview = (e) => {
+    const { src } = e.target
+    setPreview(true)
+    setImageToPreview(src)
+    console.log(preview)
+  }
+  console.log('image availibility', preview)
+  //:::
+
+  //:::
+  const removeImage = async (img, id) => {
+    console.log(img, id)
+    const findId = idsRef.current[id]
+    console.log(findId)
+    try {
+      const res = await AXIOS.delete('product-img/' + findId)
+      setImages((prev) => prev.filter((image) => image !== img))
+      idsRef.current = idsRef.current.filter((i) => i !== findId)
+      lengthRef.current--
+      console.log(idsRef.current)
+      console.log("::: remove image done:::", res)
+    } catch (error) {
+      console.log('+++remove image error+++', error)
+    }
+  }
+  //:::
+  console.log(idsRef.current)
+  console.log(lengthRef.current)
+  console.log(progressRef.current)
+
   //:::
   // URL.createObjectURL(image) - is an js API to convert image object file to image url
   const showImages = images.map((img, index) =>
     <div key={index} className='d-flex flex-column gap-2 border rounded border-gray p-2'>
       <div className='d-flex flex-row gap-3'>
-        <img src={URL.createObjectURL(img)} width='100' height='auto' className='rounded' />
-        <div className='d-flex flex-column'>
+        <img src={URL.createObjectURL(img)} width='100' height='auto' className='rounded' onClick={handleImagePreview} />
+        <div className='d-flex flex-column w-100'>
           <p className='mb-2 font-weight-bold'>{shortText(img?.name, 30)}</p>
           <small>{getFileSize(img?.size)}</small>
         </div>
+        <Button variant='danger' size='sm' style={{ height: '100%' }} onClick={() => removeImage(img, index)}>
+          <FontAwesomeIcon icon={faTrash} className='pointer' />
+        </Button>
       </div>
       <div className="upload-image-progress rounded">
         <span
           className="inner-upload-image-progress"
-          // ref={(e) => progressRef.current.push(e)}
-          style={{ width: '0%' }}
           ref={(e) => (progressRef.current[index] = e)}
+        // ref={(e) => (progressRef.current = [...progressRef.current, e])}
         >
-
         </span>
       </div>
     </div>
   )
   //:::
 
+
+
   return (
     <div>
+      {
+        preview &&
+        <ImagePreview image={imageToPreview} setPreview={setPreview} />
+      }
       <div className='form-container form-noimage'>
         <div className='form-box'>
           <h1>Add User</h1>
@@ -209,17 +263,31 @@ const AddProduct = () => {
                 onChange={(e) => handleUploadImages(e)}
                 multiple
                 required
-                disabled={!dummySent}
+                disabled={!dummySent || freezeOnUploading}
                 ref={fileRef}
                 hidden />
             </Form.Group>
 
-            <div className='upload-image' onClick={() => fileRef.current.click()} style={{ filter: `grayscale(${dummySent ? 0 : 1})` }}>
+            <div
+              className={dummySent && !freezeOnUploading && !isLoading ? 'upload-image' : freezeOnUploading ? 'uploading-upload-image' : 'inactive-upload-image'}
+              onClick={() => fileRef.current.click()}
+              title={
+                freezeOnUploading
+                  ? 'please wait till the uploading precess complete'
+                  : !dummySent && !freezeOnUploading ? 'Choose the category first'
+                    : 'upload you images'
+              }
+            >
               <FontAwesomeIcon icon={faFileUpload} size='2xl' className='fa-light' />
-              <p>Upload the images from this section</p>
+              <p>
+                {
+                  freezeOnUploading
+                    ? 'Your images are uploading....'
+                    : 'Upload the images from this section'
+                }</p>
             </div>
             <div className='d-flex flex-column gap-4 mb-4'>{showImages}</div>
-            <Button variant="primary" size="sm" type="submit" disabled={isLoading}>
+            <Button variant="primary" size="sm" type="submit" disabled={isLoading || freezeOnUploading}>
               {
                 isLoading
                   ? 'Adding Product...'
