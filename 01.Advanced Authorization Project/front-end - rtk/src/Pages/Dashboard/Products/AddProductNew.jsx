@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import useGetData from '../../Hooks/use-get-data'
-import { categoriesSelector, getCategories } from '../../rtk/features/categories/categoriesSlice'
+import useGetData from '../../../Hooks/use-get-data'
+import { categoriesSelector, getCategories } from '../../../Store/features/categories/categoriesSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProduct, addProductSelector } from '../../rtk/features/products/productsSlice'
-import AlertMsg from '../../Components/AlertMsg'
-import getFileSize from '../../utils/getFileSize'
+import { addProduct, addProductSelector } from '../../../Store/features/products/productsSlice'
+import AlertMsg from '../../../Components/AlertMsg'
+import getFileSize from '../../../utils/getFileSize'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
-import shortText from '../../utils/shortText'
-import { AXIOS } from '../../Api/AXIOS.JSX'
-import { PRO } from '../../Api/API'
+import shortText from '../../../utils/shortText'
+import { AXIOS } from '../../../Api/AXIOS.JSX'
+import { PRO } from '../../../Api/API'
 
 //['category', 'title', 'description', 'About', 'price', 'discount'];
-const AddProductCopy = () => {
+const AddProduct = () => {
   //:::
   const [form, setForm] = useState({
     category: 'Select Category',
@@ -36,9 +36,10 @@ const AddProductCopy = () => {
   const [dummySent, setDummySent] = useState(false)
   const [productId, setProductId] = useState('')
   const fileRef = useRef(null)
-  // const progressRef = useRef([])
+  const progressRef = useRef([])
+  // const progressRef = innerR([])
   //:::
-
+  // console.log('process ref', progressRef.current)
   //:::
   const focusRef = useRef(null)
   useEffect(() => {
@@ -104,46 +105,48 @@ const AddProductCopy = () => {
   }
   //:::
 
-  // const lengthRef = useRef(0)
 
   //::: handle images posting
-  console.log(images)
+  const [imagesUploaded, setImagesUploaded] = useState([])
   const handleUploadImages = async (e) => {
-    const nextImages = [...e.target.files].map((file) => ({ image: file, uploadProgress: 0 }))
-    setImages((prev) => [...prev, ...nextImages])
-    console.log('next images ===================', nextImages)
-
-    // setImages((prev) => [...prev, ...e.target.files])
+    setImages((prev) => [...prev, ...[e.target.files]])
     let imagesList = e.target.files
     console.log('images list ', imagesList)
 
     const formData = new FormData()
-    for (let i = 0; i <= imagesList.length; i++) {
-      formData.append('image', imagesList[i])
-      formData.append('product_id', productId)
-      try {
-        const res = await AXIOS.post(`/product-img/add`, formData, {
-          onUploadProgress: (ProgressEvent) => {
-            const { loaded, total } = ProgressEvent
-            let prog = ProgressEvent
-            console.log(prog)
-            let percent = Math.floor(loaded / total * 100)
-            if (percent % 10 === 0) {
-              // progressRef.current[lengthRef.current].style.width = `${percent}%`
-              // progressRef.current[lengthRef.current].setAttribute('percent', percent)
-              setImages(prev => prev.map((el, idx) => idx === i ? { ...el, uploadProgress: percent } : el))
-              // images[i].uploadProgress = percent
-              // console.log('>>>>>>>>>>>>>>>>>>>>>>>', images[i].uploadProgress)
+    try {
+      images.forEach((image) => {
+
+        for (let i = 0; i < imagesList.length; i++) {
+          formData.append('image', imagesList[i])
+          formData.append('product_id', productId)
+        }
+
+        const res = AXIOS.post(`/product-img/add`, formData,
+          {
+            onUploadProgress: (ProgressEvent) => {
+              const { loaded, total } = ProgressEvent
+              let percent = Math.floor(loaded / total * 100)
+
+              let newImage = image
+
+              newImage.progress = percent
+
+              let imagesCopy = [...images]
+
+              let imageIndex = imagesCopy.indexOf((copy) => copy.name == image.name)
+
+              imagesCopy[imageIndex] = newImage
+              setImagesUploaded([...imagesCopy])
             }
-          }
-        })
+          })
         console.log('uploads of images>>>>>>>>>>>', res)
-        // lengthRef.current++
-      } catch (error) {
-        console.log('images error', error)
-      }
+      })
+    } catch (error) {
+      console.log('images error', error)
     }
   }
+  console.log('images', imagesUploaded)
   //:::
 
   //:::
@@ -152,7 +155,7 @@ const AddProductCopy = () => {
   //:::
   //:::
   // URL.createObjectURL(image) - is an js API to convert image object file to image url
-  const showImages = images.map((img, index) =>
+  const showImages = imagesUploaded.map((img, index) =>
     <div key={index} className='d-flex flex-column gap-2 border rounded border-gray p-2'>
       <div className='d-flex flex-row gap-3'>
         <img src={URL.createObjectURL(img?.image)} width='100' height='auto' className='rounded' />
@@ -165,8 +168,8 @@ const AddProductCopy = () => {
         <span
           className="inner-upload-image-progress"
           // ref={(e) => progressRef.current.push(e)}
-          percent={img?.uploadProgress}
-          style={{ width: `${img?.uploadProgress}%` }}
+          style={{ width: `${img?.loaded}%` }}
+          percent={img?.loaded}
         // ref={(e) => (progressRef.current[index] = e)}
         >
 
@@ -231,7 +234,9 @@ const AddProductCopy = () => {
               <FontAwesomeIcon icon={faFileUpload} size='2xl' className='fa-light' />
               <p>Upload the images from this section</p>
             </div>
-            <div className='d-flex flex-column gap-4 mb-4'>{showImages}</div>
+            <div className='d-flex flex-column gap-4 mb-4'>
+              {showImages}
+            </div>
             <Button variant="primary" size="sm" type="submit" disabled={isLoading}>
               {
                 isLoading
@@ -247,4 +252,4 @@ const AddProductCopy = () => {
   )
 }
 
-export default AddProductCopy
+export default AddProduct

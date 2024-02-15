@@ -1,6 +1,6 @@
 import Cookie from 'cookie-universal'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser, logoutSelector } from '../../rtk/api/logoutSlice'
+import { logoutUser, logoutSelector } from '../../Store/features/auth/logoutSlice'
 
 const Logout = () => {
   //:::

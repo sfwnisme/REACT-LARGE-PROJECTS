@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AXIOS } from '../../../Api/AXIOS.JSX'
 import { CAT, CATS } from '../../../Api/API'
 import usePathname from '../../../Hooks/use-pathname'
+import storeErrorHandler from '../../storeErrorHandler'
 
 //:::
 const initialState = {
@@ -55,7 +56,8 @@ export const getCategories = createAsyncThunk('categories/getCategories', async 
     const customRes = res?.data
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = error?.response?.data
+    // const customError = error?.response?.data
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -71,7 +73,8 @@ export const deleteCategory = createAsyncThunk('categories/deleteCategory', asyn
   } catch (error) {
     console.log('+++++++', error)
     // if you did not return the error value .unwrap() will not wrok
-    const customError = { message: error.response.data.message, status: error.response.status }
+    // const customError = { message: error.response.data.message, status: error.response.status }
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -86,7 +89,8 @@ export const getSingleCategory = createAsyncThunk('categories/currentCategory', 
     const customRes = res?.data
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = error?.response?.data
+    // const customError = error?.response?.data
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -101,10 +105,11 @@ export const updateCategory = createAsyncThunk('categories/updaetCategory', asyn
     const customRes = { id: initialData?.id, message: 'The category has been successfully updated' }
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = {
-      message: error?.response?.data?.message,
-      status: error?.response?.data?.message
-    }
+    // const customError = {
+    //   message: error?.response?.data?.message,
+    //   status: error?.response?.data?.message
+    // }
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -118,10 +123,11 @@ export const addCategory = createAsyncThunk('categories/addCategory', async (ini
     const customRes = { message: 'The category has been successfully added', status: res?.status }
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = {
-      message: error?.response?.data?.message,
-      status: error?.response?.status
-    }
+    // const customError = {
+    //   message: error?.response?.data?.message,
+    //   status: error?.response?.status
+    // }
+    const customError = storeErrorHandler(error)
     console.log(customError)
     return rejectWithValue(customError)
   }

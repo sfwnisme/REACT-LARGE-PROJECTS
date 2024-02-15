@@ -7,8 +7,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import Cookie from 'cookie-universal';
 import getUserType from '../utils/getUserType';
-import { useEffect, useState } from 'react';
-import { currentUserSelector, getCurrentUser } from '../rtk/features/users/usersSlice';
+import { useEffect } from 'react';
+import { currentUserSelector, getCurrentUser } from '../Store/features/users/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
 const Header = () => {
   //:::

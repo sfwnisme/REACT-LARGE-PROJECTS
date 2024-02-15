@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AXIOS } from '../../../Api/AXIOS.JSX'
 import { PRO, PROS } from '../../../Api/API'
+import storeErrorHandler from '../../storeErrorHandler'
 
 //:::
 const initialState = {
@@ -38,7 +39,8 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
     const customRes = res?.data
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = error?.response?.data
+    // const customError = error?.response?.data
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })

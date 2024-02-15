@@ -1,13 +1,10 @@
 import { Button, Form } from 'react-bootstrap'
-import { AXIOS } from '../../Api/AXIOS.JSX'
-import { CAT } from '../../Api/API'
 import { useNavigate } from 'react-router-dom'
-import usePathname from '../../Hooks/use-pathname'
-import useSingleCategory from '../../Hooks/use-single-category'
+import usePathname from '../../../Hooks/use-pathname'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSingleCategory, singleCategorySelector, updateCategory, updateCategorySelector } from '../../rtk/features/categories/categoriesSlice'
-import AlertMsg from '../../Components/AlertMsg'
+import { getSingleCategory, singleCategorySelector, updateCategory, updateCategorySelector } from '../../../Store/features/categories/categoriesSlice'
+import AlertMsg from '../../../Components/AlertMsg'
 
 const Category = () => {
   //:::
@@ -28,6 +25,7 @@ const Category = () => {
   //:::
   const { data, isLoading, isSuccess, isError, isEmpty, success, error } = useSelector(singleCategorySelector)
   const { isLoading: isLoadingUpdate, isSuccess: isSuccessUpdate, isError: isErrorUpdate, isEmpty: isEmptyUpdate, success: successUpdate, error: errorUpdate } = useSelector(updateCategorySelector)
+  console.log(isErrorUpdate)
   const dispatch = useDispatch()
   useEffect(() => {
     setTitle(data.title)
@@ -76,7 +74,7 @@ const Category = () => {
               {isLoadingUpdate ? 'Updating...' : 'Update'}
             </Button>
           </Form>
-          <AlertMsg message={successUpdate?.message || errorUpdate?.message} isErrorUpdate={isErrorUpdate} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
+          <AlertMsg message={successUpdate?.message || errorUpdate?.message} isError={isErrorUpdate} delay='3000' isMsg={isMsg} setIsMsg={setIsMsg} />
         </div>
       </div>
     </div>

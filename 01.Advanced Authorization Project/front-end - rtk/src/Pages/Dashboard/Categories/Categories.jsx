@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import TableShow from "../../Components/TableShow.jsx";
-import { categoriesSelector, deleteCategory, deleteCategorySelector, getCategories } from "../../rtk/features/categories/categoriesSlice.jsx";
+import TableShow from "../../../Components/TableShow.jsx";
+import { categoriesSelector, deleteCategory, deleteCategorySelector, getCategories } from "../../../Store/features/categories/categoriesSlice.jsx";
 
 const Categories = () => {
     //::: tab title

@@ -1,12 +1,11 @@
 import { useCallback, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
 import PageLoading from '../../Loading/PageLoading/PageLoading';
 import { NavLink } from 'react-router-dom';
 import GoogleBtn from '../../Components/GoogleBtn';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, registerUserSelector } from '../../rtk/api/registerSlice';
+import { registerUser, registerUserSelector } from '../../Store/features/auth/registerSlice';
 import AlertMsg from '../../Components/AlertMsg';
 
 const Register = () => {

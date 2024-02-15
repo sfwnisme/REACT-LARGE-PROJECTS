@@ -7,7 +7,7 @@ import { BASE_URL, USER } from '../../Api/API'
 import PageLoading from '../../Loading/PageLoading/PageLoading'
 import Err403 from '../Dashboard/Err403'
 import { useSelector } from 'react-redux'
-import { currentUserSelector } from '../../rtk/features/users/usersSlice'
+import { currentUserSelector } from '../../Store/features/users/usersSlice'
 
 const RequireAuth = (props) => {
     //:::

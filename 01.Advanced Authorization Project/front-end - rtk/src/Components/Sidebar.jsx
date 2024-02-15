@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { links } from '../Pages/Dashboard/NavLinks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
-import { currentUserSelector } from '../rtk/features/users/usersSlice';
+import { currentUserSelector } from '../Store/features/users/usersSlice';
 
 const Sidebar = () => {
     //:::

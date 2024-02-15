@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { Form } from 'react-bootstrap'
-import { addCategory, addCategorySelector } from '../../rtk/features/categories/categoriesSlice'
+import { addCategory, addCategorySelector } from '../../../Store/features/categories/categoriesSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import AlertMsg from '../../Components/AlertMsg'
+import AlertMsg from '../../../Components/AlertMsg'
 
 const AddCategory = () => {
   //:::

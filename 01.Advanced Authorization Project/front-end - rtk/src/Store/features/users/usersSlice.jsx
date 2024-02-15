@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { AXIOS } from "../../../Api/AXIOS.JSX"
 import { USER, USERS } from "../../../Api/API"
 import usePathname from "../../../Hooks/use-pathname"
+import storeErrorHandler from "../../storeErrorHandler"
 
 //:::state
 const initialState = {
@@ -77,7 +78,8 @@ export const getUsers = createAsyncThunk('users/getUsers', async (_, thunkAPI) =
     return fulfillWithValue(customRes)
     // return res.data
   } catch (error) {
-    const customError = error?.response?.data
+    // const customError = error?.response?.data
+    const customError = storeErrorHandler(error)
     console.log('error', customError)
     return rejectWithValue(customError)
   }
@@ -93,7 +95,7 @@ export const deleteUser = createAsyncThunk('users/deleteUser', async (id, thunkA
     return fulfillWithValue(customRes)
   } catch (error) {
     // if you did not return the error value .unwrap() will not wrok
-    let customError = { message: error.response.data.message, status: error.response.status }
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -108,7 +110,7 @@ export const updateUser = createAsyncThunk('users/updateUser', async (initialDat
     const customRes = { id: initialData?.id, message: 'The user has been successfully updated', }
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = { message: error?.response?.data?.message, status: error?.response?.data?.message }
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -122,7 +124,8 @@ export const getCurrentUser = createAsyncThunk('users/getCurrentUser', async (_,
     const customRes = res?.data
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = error?.response?.data
+    // const customError = error?.response?.data
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })
@@ -137,7 +140,8 @@ export const getSigleUser = createAsyncThunk('users/getSingleuser', async (initi
     const customRes = res?.data
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = error?.response?.data
+    // const customError = error?.response?.data
+    const customError = storeErrorHandler(error)
     rejectWithValue(customError)
   }
 
@@ -152,10 +156,7 @@ export const addUser = createAsyncThunk('categories/addUser', async (initialData
     const customRes = { message: 'The user has been successfully added', status: res?.status }
     return fulfillWithValue(customRes)
   } catch (error) {
-    const customError = {
-      message: error?.response?.data?.message,
-      status: error?.response?.status
-    }
+    const customError = storeErrorHandler(error)
     return rejectWithValue(customError)
   }
 })

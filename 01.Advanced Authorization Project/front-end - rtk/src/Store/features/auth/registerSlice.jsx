@@ -1,23 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { AXIOS } from '../../Api/AXIOS.JSX'
-import { LOGOUT } from '../../Api/API'
+import Cookie from 'cookie-universal'
+import { BASE_URL, REGISTER } from '../../../Api/API'
+import axios from 'axios'
 
-//::: logout state
+const cookie = Cookie()
+
+//:::
 const initialState = {
   isLoading: false,
+  isSuccess: false,
   isError: false,
   error: null,
-  isSuccess: false,
-  success: null
+  success: null,
 }
 //:::
 
-//::: logout actoin
-export const logoutUser = createAsyncThunk('logout/logoutUser', async (_, thunkAPI) => {
+//::: register function
+export const registerUser = createAsyncThunk('register/registerUser', async (initialData, thunkAPI) => {
   const { fulfillWithValue, rejectWithValue } = thunkAPI
   try {
-    const res = await AXIOS.get(`/${LOGOUT}`)
-    const customRes = { message: 'The user has been successfully logged out', status: res?.status }
+    const res = await axios.post(`${BASE_URL}/${REGISTER}`, initialData)
+    cookie.set('e-commerce', res?.data?.token)
+    const customRes = { user: res?.data?.user, message: 'The user has successfully registered', status: res?.status }
     return fulfillWithValue(customRes)
   } catch (error) {
     const serverError = error?.response?.status.toString().split('')[0] === '5'
@@ -27,29 +31,29 @@ export const logoutUser = createAsyncThunk('logout/logoutUser', async (_, thunkA
     return rejectWithValue(customError)
   }
 })
+//:::
 
-
-const logoutSlice = createSlice({
-  name: 'logou',
+const registerSlice = createSlice({
+  name: 'register',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(logoutUser.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
         state.isLoading = true
         state.isSuccess = false
         state.isError = false
         state.success = null
         state.error = null
       })
-      .addCase(logoutUser.fulfilled, (state, { payload }) => {
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isSuccess = true
         state.isError = false
         state.success = payload
         state.error = null
       })
-      .addCase(logoutUser.rejected, (state, { payload }) => {
+      .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false
         state.isSuccess = false
         state.isError = true
@@ -59,5 +63,5 @@ const logoutSlice = createSlice({
   }
 })
 
-export default logoutSlice.reducer
-export const logoutSelector = (state) => state.logout
+export default registerSlice.reducer
+export const registerUserSelector = (state) => state.register

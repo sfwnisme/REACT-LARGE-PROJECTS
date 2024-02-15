@@ -1,5 +1,5 @@
-import TableShow from '../../Components/TableShow'
-import { deleteProduct, deleteProductSelector, getProducts, productsSelector } from '../../rtk/features/products/productsSlice'
+import TableShow from '../../../Components/TableShow'
+import { deleteProduct, deleteProductSelector, getProducts, productsSelector } from '../../../Store/features/products/productsSlice'
 
 const Products = () => {
   //:::

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import TableShow from "../../Components/TableShow.jsx";
+import TableShow from "../../../Components/TableShow.jsx";
 // import useSignedUser from "../../Hooks/use-signed-user.jsx"
-import { currentUserSelector, deleteUser, deleteUserSelector, getUsers, usersSelector } from "../../rtk/features/users/usersSlice.jsx";
+import { currentUserSelector, deleteUser, deleteUserSelector, getUsers, usersSelector } from "../../../Store/features/users/usersSlice.jsx";
 
 const Users = () => {
     //:::usnig this hook instead of fetching data inside the component

@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import usePathname from '../../Hooks/use-pathname'
+import usePathname from '../../../Hooks/use-pathname'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSigleUser, singleUserSelector, updateUser, updateUserSelector } from '../../rtk/features/users/usersSlice'
-import AlertMsg from '../../Components/AlertMsg'
+import { getSigleUser, singleUserSelector, updateUser, updateUserSelector } from '../../../Store/features/users/usersSlice'
+import AlertMsg from '../../../Components/AlertMsg'
 
 const User = () => {
     //:::
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [role, setRole] = useState('')
+    const [isMsg, setIsMsg] = useState(false)
     const focusRef = useRef(null)
     const { id } = usePathname()
     //:::
@@ -44,7 +45,9 @@ const User = () => {
         try {
             const res = await dispatch(updateUser(initialData)).unwrap()
             window.location.pathname = '/dashboard/users'
+            setIsMsg(true)
         } catch (error) {
+            setIsMsg(true)
             console.log('+++update user erro+++', error)
         }
     }
@@ -80,7 +83,7 @@ const User = () => {
                     </Form>
                 </div>
             </div>
-            <AlertMsg message={success?.message || error?.message} delay='2000' isError={isError} />
+            <AlertMsg message={success?.message || error?.message} delay='2000' isError={isError} isMsg={isMsg} setIsMsg={setIsMsg} />
         </div>
     )
 

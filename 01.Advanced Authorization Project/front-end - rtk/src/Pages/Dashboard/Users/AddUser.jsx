@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
-import { AXIOS } from '../../Api/AXIOS.JSX'
-import { USER } from '../../Api/API'
-import { addUser, addUserSelector } from '../../rtk/features/users/usersSlice'
+import { Button, Form } from 'react-bootstrap'
+import { addUser, addUserSelector } from '../../../Store/features/users/usersSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import AlertMsg from '../../Components/AlertMsg'
+import AlertMsg from '../../../Components/AlertMsg'
 
 const AddUser = () => {
     //:::
